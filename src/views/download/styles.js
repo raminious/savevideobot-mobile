@@ -20,10 +20,10 @@ export default StyleSheet.create({
     marginBottom: 5
   },
   thumbnailContainer: {
-    flex: 1
+    width: 120
   },
   fieldsContainer: {
-    flex: 2
+    width: width - (120 + 20)
   },
   thumbnail: {
     width: 105,
@@ -52,6 +52,12 @@ export default StyleSheet.create({
     paddingBottom: 6,
     paddingLeft: padding + 3,
     color: 'gray'
+  },
+  noFormat: {
+    paddingTop: 2,
+    paddingBottom: 6,
+    paddingLeft: padding + 3,
+    fontSize: 13
   },
   /* download */
   downloadBtnContainer: {

@@ -10,6 +10,7 @@ import ProgressView from '../views/progress'
 import FilesView from '../views/files'
 import FileDetailView from '../views/file-detail'
 import SettingsView from '../views/settings'
+import CommunityView from '../views/community'
 
 const ApplicationContainer = ({ location }) => {
   return (
@@ -21,6 +22,7 @@ const ApplicationContainer = ({ location }) => {
         <Route exact path="/files" component={FilesView} />
         <Route exact path="/files/:id" component={FileDetailView} />
         <Route exact path="/settings" component={SettingsView} />
+        <Route exact path="/live" component={CommunityView} />
       </View>
 
       <TabsNavigation
@@ -32,7 +34,8 @@ const ApplicationContainer = ({ location }) => {
 
 const styles = StyleSheet.create({
   mainContent: {
-    flex: 1
+    flex: 1,
+    backgroundColor: '#fff'
   }
 })
 

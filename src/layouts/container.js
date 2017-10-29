@@ -5,6 +5,9 @@ import { View, Text, StyleSheet } from 'react-native'
 import { Container, Content } from 'native-base'
 import AuthenticationLayout from './authentication'
 import ApplicationLayout from './application'
+import '../utils/android-back-button'
+import '../services/network-monitor'
+import '../services/authentication'
 
 const AppContainer = ({ account }) => (
   <Switch>

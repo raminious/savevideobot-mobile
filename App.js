@@ -1,6 +1,6 @@
 import React from 'react'
 import { Provider } from 'react-redux'
-import { NativeRouter, Route, Link } from 'react-router-native'
+import { NativeRouter, Route, Link, AndroidBackButton } from 'react-router-native'
 import { StyleProvider, Root } from 'native-base'
 import getTheme from './theme/components'
 import material from './theme/variables/material'
@@ -12,11 +12,13 @@ export default class extends React.Component {
     return (
       <Provider store={store}>
         <NativeRouter>
-          <StyleProvider style={getTheme(material)}>
-            <Root>
-              <Route path="/" component={AppContainer} />
-            </Root>
-          </StyleProvider>
+          <AndroidBackButton>
+            <StyleProvider style={getTheme(material)}>
+              <Root>
+                <Route path="/" component={AppContainer} />
+              </Root>
+            </StyleProvider>
+          </AndroidBackButton>
         </NativeRouter>
       </Provider>
     )

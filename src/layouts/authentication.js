@@ -11,7 +11,7 @@ const AuthenticationContainer = (props) => {
   return (
     <Container>
       <View style={styles.mainContent}>
-        <Route exact path="/auth/intro" component={IntroView} />
+        <Route exact path="/auth" component={IntroView} />
         <Route exact path="/auth/login" component={LoginView} />
         <Route exact path="/auth/signup" component={SignupView} />
       </View>

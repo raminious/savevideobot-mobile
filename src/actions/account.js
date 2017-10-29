@@ -4,7 +4,7 @@ import db from '../database'
 export function login(identity) {
   return {
     type: types.LOGIN,
-    identity,
+    identity
   }
 }
 

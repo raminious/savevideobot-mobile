@@ -226,7 +226,7 @@ class FilesView extends React.Component {
                 <Body style={{ flex: 7 }}>
                   <Text
                     style={styles.title}
-                    onPress={() => { this.onSelectRow(item) }}
+                    onPress={() => this.onSelectRow(item) }
                   >
                     { item.title }
                   </Text>

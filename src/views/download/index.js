@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { Content, View, Toast, Button, Text, Icon } from 'native-base'
 import { Platform, Image } from 'react-native'
 import RNFetchBlob from 'react-native-fetch-blob'
+import _ from 'underscore'
 import Header from './header'
 import MediaInfo from './media-info'
 import Formats from './formats'
@@ -16,18 +17,28 @@ import styles from './styles'
 class DownloadView extends React.Component {
   constructor(props) {
     super(props)
-    const { download } = props
-    const { formats } = download
 
     this.state = {
       working: false,
       thumbnail: null,
-      selectedFormat: formats.length > 0 ? formats[0].id : 'best'
+      selectedFormat: this.getBestFormat()
     }
   }
 
   componentDidMount() {
     this.fetchThumbnail()
+  }
+
+  getBestFormat() {
+    const { download } = this.props
+    const { formats } = download
+
+    if (formats.length === 0) {
+      return 'best'
+    }
+
+    const find = formats.find(f => f.id === 18)
+    return find ? 18 : formats[0].id
   }
 
   /*
@@ -172,6 +183,8 @@ class DownloadView extends React.Component {
     const downloadLink = await this.findDownloadLink(download, stream)
 
     if (!downloadLink) {
+      this.setState({ working: false })
+
       return Toast.show({
         text: 'Both direct and mirror links are not working at this time',
         position: 'bottom',
@@ -305,30 +318,33 @@ class DownloadView extends React.Component {
           onRequestDownload={() => this.startProcessing()}
         />
 
-        <MediaInfo
-          thumbnail={thumbnail}
-          download={download}
-        />
+        <Content
+          contentContainerStyle={styles.container}
+        >
+          <MediaInfo
+            download={download}
+          />
 
-        <Formats
-          formats={download.formats}
-          selectedFormat={selectedFormat}
-          onChangeFormat={(id) => this.onChangeFormat(id)}
-        />
+          <Formats
+            formats={download.formats}
+            selectedFormat={selectedFormat}
+            onChangeFormat={(id) => this.onChangeFormat(id)}
+          />
 
-        <View style={styles.downloadBtnContainer}>
-          <Button
-            iconLeft
-            danger
-            full
-            rounded
-            disabled={working}
-            onPress={() => this.startProcessing()}
-          >
-            <Icon name="download" />
-            <Text>{working ? 'Processing...' : 'Start Downloading'}</Text>
-          </Button>
-        </View>
+          <View style={styles.downloadBtnContainer}>
+            <Button
+              iconLeft
+              danger
+              full
+              rounded
+              disabled={working}
+              onPress={() => this.startProcessing()}
+            >
+              <Icon name="download" />
+              <Text>{working ? 'Processing...' : 'Start Downloading'}</Text>
+            </Button>
+          </View>
+        </Content>
       </View>
     )
   }

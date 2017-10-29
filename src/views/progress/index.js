@@ -17,7 +17,7 @@ import {
   Left,
   Right
 } from 'native-base'
-import { Dimensions, TouchableOpacity } from 'react-native'
+import { Alert, Dimensions } from 'react-native'
 import _ from 'underscore'
 import moment from 'moment'
 import 'moment-duration-format'
@@ -51,6 +51,17 @@ class ProgressView extends React.Component {
   onOpenMedia(taskId) {
     const { history } = this.props
     history.push(`/files/${taskId}`)
+  }
+
+  requestStopTask(taskId) {
+    Alert.alert(
+      `Stop downloading`,
+      'Are you sure to stop downloading this file ?',
+      [
+        {text: 'Cancel', style: 'cancel'},
+        {text: 'Yes, Stop', onPress: () => this.onStopTask(taskId)},
+      ]
+    )
   }
 
   onStopTask(taskId) {
@@ -141,7 +152,7 @@ class ProgressView extends React.Component {
                         }
 
                         {
-                          percent > 0 &&
+                          percent > 0 && item.active &&
                           <Text style={styles.percent}>
                             { (percent * 100).toFixed(2) }% of { this.bytes(item.total) }
 
@@ -158,7 +169,7 @@ class ProgressView extends React.Component {
                         {
                           percent === 0 && item.active &&
                           <Text style={styles.percent}>
-                            Fetching download information
+                            Waiting for server response
                           </Text>
                         }
                       </View>
@@ -170,7 +181,7 @@ class ProgressView extends React.Component {
                       onClearTask={(taskId) => this.onClearTask(taskId)}
                       onRemoveTask={(taskId) => this.onRemoveTask(taskId)}
                       onOpenMedia={(taskId) => this.onOpenMedia(taskId)}
-                      onStopTask={(taskId) => this.onStopTask(taskId)}
+                      onStopTask={(taskId) => this.requestStopTask(taskId)}
                       onResumeTask={(taskId) => this.onResumeTask(taskId)}
                     />
                   </ListItem>

@@ -17,39 +17,41 @@ export default class extends React.Component {
     const { formats, selectedFormat, onChangeFormat } = this.props
     const { ds } = this.state
 
-    if (formats.length === 0) {
-      return false
-    }
-
     return (
       <View style={styles.formatsContainer}>
         <View>
           <Text style={styles.formatsHeader}>
-            Available formats ({formats.length}):
+            Available qualities ({formats.length}):
           </Text>
         </View>
 
         <View>
-          <ListView
-            showsVerticalScrollIndicator
-            dataSource={ds.cloneWithRows(formats)}
-            renderRow={(format) => (
-              <ListItem
-                style={styles.formatsListItem}
-                key={format.id}
-                onPress={() => onChangeFormat(format.id)}
-              >
-                <CheckBox
-                  checked={format.id === selectedFormat}
+          {
+            formats.length > 0 ?
+            <ListView
+              showsVerticalScrollIndicator
+              dataSource={ds.cloneWithRows(formats)}
+              renderRow={(format) => (
+                <ListItem
+                  style={styles.formatsListItem}
+                  key={format.id}
                   onPress={() => onChangeFormat(format.id)}
-                />
+                >
+                  <CheckBox
+                    checked={format.id === selectedFormat}
+                    onPress={() => onChangeFormat(format.id)}
+                  />
 
-                <Body>
-                  <Text>{format.dimension} - {format.ext}</Text>
-                </Body>
-              </ListItem>
-            )}
-          />
+                  <Body>
+                    <Text>{format.dimension} - {format.ext}</Text>
+                  </Body>
+                </ListItem>
+              )}
+            /> :
+            <Text style={styles.noFormat}>
+              There isn't any additonal quality options to choose.
+            </Text>
+          }
         </View>
       </View>
     )

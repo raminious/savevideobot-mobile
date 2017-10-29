@@ -118,6 +118,7 @@ Media.getTypeByExtension = function (extension) {
   const types = {
     music: ['mp3', 'aac', 'amr', 'wav', 'wma', 'ogg', 'm4a', 'opus'],
     video: ['mp4', 'webm', '3gp', 'mkv', 'flv', 'gif', 'avi', 'mov', 'wmv', 'mpg', 'mpeg', 'rmvb'],
+    image: ['jpg', 'jpeg', 'png', 'gif']
   }
 
   // eslint-disable-next-line no-restricted-syntax
@@ -129,6 +130,15 @@ Media.getTypeByExtension = function (extension) {
   }
 
   return type
+}
+
+/**
+ *
+ */
+Media.normalize = function(media) {
+  media.formats = media.formats || []
+  media.type = Media.getTypeByExtension(media.extension)
+  return media
 }
 
 /**
@@ -161,9 +171,7 @@ Media.dump = async function (id) {
   } while (counter < retry && !responseReceived)
 
   if (media.status === 'ready') {
-    media.formats = media.formats || []
-    media.type = Media.getTypeByExtension(media.extension)
-    return media
+    return Media.normalize(media)
   }
 
   throw media

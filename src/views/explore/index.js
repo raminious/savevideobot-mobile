@@ -3,10 +3,11 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-native'
 import { Image, Keyboard } from 'react-native'
 import { View, Toast, Item, Text, Content, InputGroup, Input, Label, Icon, Button } from 'native-base'
-import styles from './styles'
+import * as Animatable from 'react-native-animatable'
 import Loading from '../../components/loading'
 import { setMedia } from '../../actions/download'
 import Media from '../../api/media'
+import styles from './styles'
 
 const urlPattern = /(^|\s)((https?:\/\/)?[\w-]+(\.[\w-]+)+\.?(:\d+)?(\/\S*)?)/gi
 
@@ -15,7 +16,7 @@ class ExploreView extends React.Component {
     super(props)
     this.state = {
       searching: false,
-      url: 'https://www.youtube.com/watch?v=OVXl2EO63Mc',
+      url: 'https://www.instagram.com/p/Ba05TKRB9Xi',
       isValidated: true
     }
   }
@@ -31,14 +32,16 @@ class ExploreView extends React.Component {
   * send request for explore url to server
   */
   async explore() {
-    const { url } = this.state
+    const { url, isValidated } = this.state
     const { history, setMedia } = this.props
 
-    // Toast.show({
-    //   text: 'TEST TOAST',
-    //   position: 'bottom',
-    //   buttonText: 'Okay'
-    // })
+    if (!isValidated){
+      return Toast.show({
+        text: 'Enter a valid link',
+        position: 'bottom',
+        buttonText: 'Okay'
+      })
+    }
 
     this.setState({
       searching: true
@@ -76,14 +79,20 @@ class ExploreView extends React.Component {
     return (
       <Content contentContainerStyle={styles.container}>
         <View style={styles.row}>
-          <Icon
-            active
-            name="cloud-download"
-            style={{
-              fontSize: 140,
-              color: '#ccc'
-            }}
-          />
+          <Animatable.View
+            animation="pulse"
+            iterationCount="infinite"
+            duration={2000}
+          >
+            <Icon
+              active
+              name="cloud-download"
+              style={{
+                fontSize: 140,
+                color: '#ccc'
+              }}
+            />
+          </Animatable.View>
         </View>
 
         <View style={styles.row}>
@@ -116,7 +125,7 @@ class ExploreView extends React.Component {
             rounded
             onPress={() => this.explore()}
           >
-            <Text>Download</Text>
+            <Text>Search Link</Text>
           </Button>
         </View>
       </Content>

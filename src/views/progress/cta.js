@@ -4,14 +4,16 @@ import { TouchableOpacity, Text } from 'react-native'
 import styles from './styles'
 
 function can(task, op) {
+  const { active, done, resumable } = task
+
   const operations = {
-    pause: task.active && !task.done && task.resumable,
-    stop: task.active && !task.done && !task.resumable,
-    resume: !task.active && !task.done && task.resumable,
-    cancel: !task.active && !task.done,
-    restart: !task.active && !task.done && !task.resumable,
-    open: task.done,
-    clear: task.done
+    pause: active && !done && resumable,
+    stop: active && !done && !resumable,
+    resume: !active && !done && resumable,
+    cancel: !active && !done,
+    restart: !active && !done && !resumable,
+    open: done,
+    clear: done
   }
 
   return operations[op]

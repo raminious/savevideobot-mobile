@@ -2,6 +2,7 @@ import RNFetchBlob from 'react-native-fetch-blob'
 import path from 'path'
 import db from '../../database'
 import store from '../../store'
+import Media from '../../api/media'
 import { addProgress, updateProgress, removeProgress } from '../../actions/progress'
 
 const Downloader = {}
@@ -44,17 +45,19 @@ Downloader.createTask = async function(id, downloadLink, filepath, resumable, st
     link: downloadLink,
     filepath: filepath,
     active: true,
+    done: false,
+    resumable: resumable,
     start_byte: startByte,
     start_time: (new Date()).getTime()
   }))
 
   await Task
-  .progress({ interval: 1000 }, (received, total) => {
+  .progress({ count: 100 }, (received, total) => {
     Downloader.onProgressChange(id, received, total, startByte)
   })
   .then(
-    result => this.onFinish(id, result),
-    error => this.onFail(id, error)
+    result => Downloader.onFinish(id, result),
+    error => Downloader.onFail(id, error)
   )
 }
 
@@ -81,27 +84,35 @@ Downloader.onFail = function(id, error) {
     error: error.message,
     active: false
   }))
-
-  setTimeout(() => {
-    Downloader.removeTask(id)
-  }, 3000)
 }
 
 /**
  *
  */
-Downloader.onFinish = function(id, result) {
-  const totalSize = Downloader.getTotalSize(id)
+Downloader.onFinish = async function(id, result) {
+  const task = Downloader.getTask(id)
   const { status } = result.info()
 
   if (status >= 400) {
     return Downloader.onFail(id, { message: 'Can not download file' })
   }
 
+  const receivedBytes = await Media.getStartByte(result.path())
+  const downloadedPercent = (100 * receivedBytes) / task.total
+  const isCompleted = downloadedPercent > 99
+
+  // because RNFetchBlob sucks on download cancelation, I check percentage once
+  // to ensure file is downloaded completely or not
+  if (!isCompleted) {
+    return Downloader.onFail(id, {
+      message: `Download is ${task.resumable ? 'paused' : 'cancelled'}`
+    })
+  }
+
   // update in database
   db.save('Media', {
     id,
-    size: totalSize,
+    size: task.total,
     status: 'complete',
     filepath: result.path(),
     date_modified: new Date()
@@ -109,13 +120,13 @@ Downloader.onFinish = function(id, result) {
 
   // update task
   store.dispatch(updateProgress(id, {
-    received: totalSize,
+    received: task.total,
     active: false,
     done: true
   }))
 
   // clear task after 5 seconds
-  setTimeout(() => Downloader.clearTask(id), 5000)
+  setTimeout(() => Downloader.clearTask(id), 60000)
 }
 
 /**
@@ -175,13 +186,6 @@ Downloader.resumeTask = async function(id) {
   Downloader.createTask(id, link, filepath, resumable, startByte)
 }
 
-/**
- *
- */
-Downloader.getTotalSize = function(id) {
-  const task = Downloader.getTask(id)
-  return ~~task.total
-}
 
 /**
  *

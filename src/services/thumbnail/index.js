@@ -3,10 +3,10 @@ import RNFetchBlob from 'react-native-fetch-blob'
 import Path from 'path'
 import uri from 'url'
 
-const wallpapers = {
-  music: require('../../assets/wallpapers/music.jpg'), // eslint-disable-line global-require
-  video: require('../../assets/wallpapers/video.jpg'), // eslint-disable-line global-require
-  document: require('../../assets/wallpapers/document.jpg') // eslint-disable-line global-require
+const defaultThumbnails = {
+  music: require('../../assets/thumbs/music.jpg'), // eslint-disable-line global-require
+  video: require('../../assets/thumbs/video.jpg'), // eslint-disable-line global-require
+  document: require('../../assets/thumbs/document.jpg') // eslint-disable-line global-require
 }
 
 /*
@@ -16,7 +16,17 @@ const wallpapers = {
  */
 const getInfo = async function (media) {
   if (!media.thumbnail) {
-    return null
+    if (media.type === 'image') {
+      return {
+        url: media.download,
+        filename: Path.basename(uri.parse(media.download).pathname)
+      }
+    } else {
+      return {
+        isDefault: true,
+        path: getMediaDefultThumbnail(media.type)
+      }
+    }
   }
 
   const thumbnails = [media.thumbnail, media.thumbnailProxy]
@@ -31,7 +41,10 @@ const getInfo = async function (media) {
   }
 
   if (url === null) {
-    return null
+    return {
+      isDefault: true,
+      path: getMediaDefultThumbnail(media.type)
+    }
   }
 
   // get filename based on url
@@ -44,19 +57,19 @@ const getInfo = async function (media) {
 }
 
 /**
- *  return wallpaper based on file type
+ *  return default thumbnail based on file type
  */
-const getMediaWallpaper = function (type) {
-  return wallpapers[type]
+const getMediaDefultThumbnail = function (type) {
+  return defaultThumbnails[type]
 }
 
 /*
  * get thumbnail
  */
 const fetchImageFromInternet = (thumbnail) => {
-  // if (thumbnail.isWallpaper) {
-  //   return thumbnail.path
-  // }
+  if (thumbnail.isDefault) {
+    return thumbnail.path
+  }
 
   return {
     uri: thumbnail.url
@@ -68,7 +81,7 @@ const fetchImageFromInternet = (thumbnail) => {
  */
 const loadImage = (media) => {
   if (!media.thumbnail) {
-    return getMediaWallpaper(media.type)
+    return getMediaDefultThumbnail(media.type)
   }
 
   return {
@@ -81,9 +94,9 @@ const loadImage = (media) => {
  * save media thumbnail on disk
  */
 const saveOnDisk = async (id, thumbnail, prefix) => {
-  // if (thumbnail.isWallpaper) {
-  //   return null
-  // }
+  if (thumbnail.isDefault) {
+    return null
+  }
 
   const destination = (prefix + thumbnail.filename)
     .replace(/[&/\\#,+()$~%'":*?<>{}\s+]/g, '')

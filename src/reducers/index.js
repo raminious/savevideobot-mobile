@@ -4,10 +4,12 @@ import app from './app'
 import progress from './progress'
 import account from './account'
 import download from './download'
+import live from './live'
 
 export default combineReducers({
   app,
   account,
   download,
-  progress
+  progress,
+  live
 })

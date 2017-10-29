@@ -3,6 +3,7 @@ import { View, Text } from 'native-base'
 import { Image } from 'react-native'
 import moment from 'moment'
 import 'moment-duration-format'
+import AsyncImage from '../../components/async-image'
 import styles from './styles'
 
 function getTitle(title = '', max = 40) {
@@ -12,18 +13,14 @@ function getTitle(title = '', max = 40) {
 }
 
 export default ({
-  download,
-  thumbnail
+  download
 }) => (
   <View style={styles.mediaInfoContainer}>
     <View style={styles.thumbnailContainer}>
-      {
-        thumbnail &&
-        <Image
-          style={styles.thumbnail}
-          source={{ uri: thumbnail.url }}
-        />
-      }
+      <AsyncImage
+        style={styles.thumbnail}
+        media={download}
+      />
     </View>
 
     <View style={styles.fieldsContainer}>
