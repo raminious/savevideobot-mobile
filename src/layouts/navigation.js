@@ -67,7 +67,7 @@ const Navigation = ({ location, progress }) => {
         </TabLink>
 
         <TabLink to="/live">
-          {getIcon('cube', ['live'], pathname)}
+          {getIcon('globe', ['live'], pathname)}
         </TabLink>
       </FooterTab>
     </Footer>

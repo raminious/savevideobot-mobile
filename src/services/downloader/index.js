@@ -3,6 +3,7 @@ import path from 'path'
 import db from '../../database'
 import store from '../../store'
 import Media from '../../api/media'
+import httpErrors from '../../utils/http-errors'
 import { addProgress, updateProgress, removeProgress } from '../../actions/progress'
 
 const Downloader = {}
@@ -93,8 +94,9 @@ Downloader.onFinish = async function(id, result) {
   const task = Downloader.getTask(id)
   const { status } = result.info()
 
-  if (status >= 400) {
-    return Downloader.onFail(id, { message: 'Can not download file' })
+  if ([200, 202, 205, 206].indexOf(status) === -1) {
+    let errorMessage = httpErrors[status] || 'Can not download file'
+    return Downloader.onFail(id, { message:  `Server error: ${errorMessage}`})
   }
 
   const receivedBytes = await Media.getStartByte(result.path())
@@ -105,7 +107,7 @@ Downloader.onFinish = async function(id, result) {
   // to ensure file is downloaded completely or not
   if (!isCompleted) {
     return Downloader.onFail(id, {
-      message: `Download is ${task.resumable ? 'paused' : 'cancelled'}`
+      message: `Download is ${task.resumable ? 'paused' : 'not completed'}`
     })
   }
 

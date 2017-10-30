@@ -136,7 +136,7 @@ class ProgressView extends React.Component {
                         <Bar
                           color={colors[Math.floor((percent * 100) % 4)]}
                           indeterminate={percent === 0 && item.active}
-                          progress={item.done ? 100 : percent}
+                          progress={item.done ? 1 : percent}
                           width={width / 2}
                           borderRadius={0}
                           height={17}
@@ -148,6 +148,13 @@ class ProgressView extends React.Component {
                           item.error &&
                           <Text style={[styles.percent, styles.red]}>
                             {item.error}
+                          </Text>
+                        }
+
+                        {
+                          item.done &&
+                          <Text style={[styles.percent, styles.green]}>
+                            Download is completed
                           </Text>
                         }
 

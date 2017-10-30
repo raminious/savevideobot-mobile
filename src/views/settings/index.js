@@ -3,6 +3,7 @@ import { withRouter } from 'react-router-native'
 import { connect } from 'react-redux'
 import { Platform, StyleSheet, Alert, Linking } from 'react-native'
 import { View, Text, Content, Icon, List, ListItem, Left, Right, Body, Switch } from 'native-base'
+import ShareActions from 'react-native-share-actions'
 import RNFetchBlob from 'react-native-fetch-blob'
 import _ from 'underscore'
 import { logout } from '../../actions/account'
@@ -23,19 +24,36 @@ class SettingsView extends React.Component {
   }
 
   signoutRequest() {
-    Alert.alert(
-      'Logout',
-      'Are you sure?',
-      [
-        { text: 'Cancel', style: 'cancel' },
-        { text: 'Yes, Logout', onPress: () => this.signout() }
-      ]
-    )
+    this.handlePressShare()
+    // Alert.alert(
+    //   'Logout',
+    //   'Are you sure?',
+    //   [
+    //     { text: 'Cancel', style: 'cancel' },
+    //     { text: 'Yes, Logout', onPress: () => this.signout() }
+    //   ]
+    // )
   }
 
   signout() {
     const { logout } = this.props
     logout()
+  }
+
+  async function handlePressShare() {
+    try {
+      const result = await ShareActions.share({
+        url: 'http://www.example.com',
+        message: 'This is a message',
+        subject: 'Example'
+      }, 'Share URL');
+
+      if (result.success) {
+        console.log(`Shared via ${result.method}`);
+      }
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   render() {

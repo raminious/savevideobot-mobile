@@ -212,6 +212,7 @@ class FileDetailView extends React.Component {
                     iconLeft
                     rounded
                     bordered
+                    success
                     style={styles.btnCta}
                     onPress={() => this.openFile()}
                   >
