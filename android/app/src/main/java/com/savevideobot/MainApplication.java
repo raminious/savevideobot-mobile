@@ -3,6 +3,7 @@ package com.savevideobot;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import io.sentry.RNSentryPackage;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.microsoft.codepush.react.CodePush;
 import com.oblador.vectoricons.VectorIconsPackage;
@@ -34,6 +35,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNSentryPackage(MainApplication.this),
             new RNDeviceInfo(),
             new CodePush(BuildConfig.CODEPUSH_KEY, MainApplication.this, BuildConfig.DEBUG),
             new VectorIconsPackage(),

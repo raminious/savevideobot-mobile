@@ -1,59 +1,19 @@
 import React from 'react'
 import { withRouter } from 'react-router-native'
 import { connect } from 'react-redux'
-import { Platform, StyleSheet, Alert, Linking } from 'react-native'
+import { Share, Platform, StyleSheet, Alert, Linking } from 'react-native'
 import { View, Text, Content, Icon, List, ListItem, Left, Right, Body, Switch } from 'native-base'
-import ShareActions from 'react-native-share-actions'
-import RNFetchBlob from 'react-native-fetch-blob'
-import _ from 'underscore'
-import { logout } from '../../actions/account'
-import App from '../../../package.json'
 import Header from './header'
+import SignoutView from './signout'
+import SubscriptionView from './subscription'
+import SavePathView from './save-path'
+import AppVersionView from './app-version'
+import TelegramView from './telegram'
 import styles from './styles'
 
 class SettingsView extends React.Component {
   constructor(props) {
     super(props)
-  }
-
-  componentDidMount() {
-    _.each(RNFetchBlob.fs.dirs, (path, id) =>
-      console.log(id, path)
-    )
-
-  }
-
-  signoutRequest() {
-    this.handlePressShare()
-    // Alert.alert(
-    //   'Logout',
-    //   'Are you sure?',
-    //   [
-    //     { text: 'Cancel', style: 'cancel' },
-    //     { text: 'Yes, Logout', onPress: () => this.signout() }
-    //   ]
-    // )
-  }
-
-  signout() {
-    const { logout } = this.props
-    logout()
-  }
-
-  async function handlePressShare() {
-    try {
-      const result = await ShareActions.share({
-        url: 'http://www.example.com',
-        message: 'This is a message',
-        subject: 'Example'
-      }, 'Share URL');
-
-      if (result.success) {
-        console.log(`Shared via ${result.method}`);
-      }
-    } catch (error) {
-      console.error(error);
-    }
   }
 
   render() {
@@ -71,20 +31,7 @@ class SettingsView extends React.Component {
               </Body>
             </ListItem>
 
-            <ListItem icon>
-              <Left>
-                <Icon name="cloud-download" />
-              </Left>
-              <Body>
-                <Text>Files path</Text>
-              </Body>
-              <Right>
-                <Text note>
-                  { _.find(RNFetchBlob.fs.dirs, (path, id) => id === 'DownloadDir')}
-                  /savevideobot
-                </Text>
-              </Right>
-            </ListItem>
+            <SavePathView />
 
             <ListItem itemDivider icon>
               <Body>
@@ -92,35 +39,33 @@ class SettingsView extends React.Component {
               </Body>
             </ListItem>
 
-            <ListItem icon>
-              <Left>
-                <Icon name="contacts" />
-              </Left>
+            <SignoutView
+              account={account}
+            />
+
+            <SubscriptionView
+              account={account}
+            />
+
+            <ListItem itemDivider icon>
               <Body>
-                <Text>{account.email}</Text>
+                <Text>Integrations</Text>
               </Body>
-              <Right>
-                <Text
-                  note
-                  onPress={() => this.signoutRequest()}
-                  style={{ fontWeight: 'bold' }}
-                >
-                  Logout
-                </Text>
-              </Right>
             </ListItem>
 
-            <ListItem icon>
-              <Left>
-                <Icon name="contacts" />
-              </Left>
-              <Body>
-                <Text>Subscription</Text>
-              </Body>
-              <Right>
+            <TelegramView
+              account={account}
+            />
 
-              </Right>
+            <ListItem itemDivider icon>
+              <Body>
+                <Text>Application</Text>
+              </Body>
             </ListItem>
+
+            <AppVersionView
+              account={account}
+            />
 
           </List>
         </Content>
@@ -133,4 +78,4 @@ function mapStateToProps({ app, account }) {
   return { app, account }
 }
 
-export default withRouter(connect(mapStateToProps, { logout })(SettingsView))
+export default withRouter(connect(mapStateToProps)(SettingsView))

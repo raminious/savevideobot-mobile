@@ -85,13 +85,13 @@ class LoginView extends React.Component {
     }
 
     // hold user identity
-    let identity
+    let user
 
     // display modal
     this.setState({ working: true })
 
     try {
-      identity = await User.signin(email, password)
+      user = await User.signin(email, password)
     } catch (e) {
       this.setState({ working: false })
 
@@ -105,17 +105,26 @@ class LoginView extends React.Component {
     }
 
     db.save('User', {
-      name: identity.name,
-      username: identity.username || '',
-      email: identity.email,
-      access_token: identity.token,
+      id: user.id,
+      name: user.name,
+      username: user.username || '',
+      email: user.email,
+      telegram_id: user.telegram_id || null,
+      telegram_bot: this.getTelegramBot(user),
+      access_token: user.access_token,
       date_modified: new Date(),
     }, true)
 
-    // save identity on redux
+    // save user on redux
     login(User.getIdentity())
 
     history.push('/')
+  }
+
+  getTelegramBot(user) {
+    return user.telegram_bot && user.telegram_bot.username ?
+      user.telegram_bot.username :
+      null
   }
 
   render() {

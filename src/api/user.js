@@ -10,8 +10,17 @@ User.getIdentity = function () {
   const user = db.find('User')
 
   if (user.length === 1) {
-    const { name, username, email, access_token } = user[0]
-    return { name, username, email, access_token }
+    const identity = user[0]
+
+    return {
+      id: identity.id,
+      name: identity.name,
+      username: identity.username,
+      email: identity.email,
+      telegram_id: identity.telegram_id,
+      telegram_bot: identity.telegram_bot,
+      access_token: identity.access_token
+    }
   }
 
   return null

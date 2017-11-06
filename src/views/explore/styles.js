@@ -3,6 +3,9 @@ const { height, width } = Dimensions.get('window')
 
 export default StyleSheet.create({
   container: {
+    flex: 1
+  },
+  contentWrapper: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center'

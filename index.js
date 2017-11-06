@@ -2,6 +2,8 @@
 /* eslint no-console: "off"*/
 /* eslint no-global-assign: "off"*/
 import { AppRegistry } from 'react-native'
+
+// import app bootstrap
 import App from './App'
 
 /*

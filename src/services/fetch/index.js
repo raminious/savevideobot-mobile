@@ -1,8 +1,10 @@
 import SuperAgent from 'superagent'
 import { NetInfo, Platform } from 'react-native'
+import { Toast } from 'native-base'
 import store from '../../store'
 import config from '../../config'
 import App from '../../../package.json'
+import { logout } from '../../actions/account'
 
 export default class Fetch {
   constructor(options = {}) {
@@ -11,7 +13,7 @@ export default class Fetch {
 
   _create(method, endpoint) {
     const { account } = store.getState()
-    account.access_token = 'TPCYIcQEHctu1fcv6m8pQjFw6+0lVzVw'
+
     // const hasConnection = await this.checkInternetConnection()
 
     // if (hasConnection === false) {
@@ -25,16 +27,9 @@ export default class Fetch {
       .set('app-platform', 'mobile')
       .set('app-os', Platform.OS)
 
-    // agent.on('error', e => {
-    //   console.log(e.response)
-    // })
+    agent.on('error', e => this.onError(e))
 
     return agent
-  }
-
-  async checkInternetConnection() {
-    const isConnected = await NetInfo.isConnected.fetch()
-    return isConnected
   }
 
   get(endpoint) {
@@ -43,5 +38,25 @@ export default class Fetch {
 
   post(endpoint) {
     return this._create('post', endpoint)
+  }
+
+  async checkInternetConnection() {
+    return await NetInfo.isConnected.fetch()
+  }
+
+  onError(e) {
+    if (e.response.status === 401) {
+      this.onInvalidAccessToken()
+    }
+  }
+
+  onInvalidAccessToken() {
+    Toast.show({
+      text: 'Your login has been expired.',
+      position: 'bottom',
+      duration: 2500
+    })
+
+    store.dispatch(logout())
   }
 }

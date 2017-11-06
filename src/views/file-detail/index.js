@@ -210,7 +210,6 @@ class FileDetailView extends React.Component {
                     small
                     full
                     iconLeft
-                    rounded
                     bordered
                     success
                     style={styles.btnCta}
@@ -226,7 +225,6 @@ class FileDetailView extends React.Component {
                     iconLeft
                     bordered
                     danger
-                    rounded
                     style={styles.btnCta}
                     onPress={() => this.requestDeleteFile()}
                   >

@@ -1,7 +1,7 @@
 import React from 'React'
 import { withRouter } from 'react-router-native'
 import { connect } from 'react-redux'
-import { Content, View, Toast, Button, Text, Icon } from 'native-base'
+import { Content, View, Toast, Button, Text, Icon, Col, Row, Grid } from 'native-base'
 import { Platform, Image } from 'react-native'
 import RNFetchBlob from 'react-native-fetch-blob'
 import _ from 'underscore'
@@ -53,26 +53,6 @@ class DownloadView extends React.Component {
     }, () => {
       history.goBack()
     })
-  }
-
-  /*
-   * return download path based on platform
-   */
-  async getDownloadPath() {
-    const dirs = RNFetchBlob.fs.dirs
-
-    const basePath = Platform.select({
-      ios: () => `${dirs.DocumentDir}/downloads`,
-      android: () => `${dirs.DownloadDir}/savevideobot`,
-    })()
-
-    const isDir = await RNFetchBlob.fs.isDir(basePath)
-
-    if (!isDir) {
-      await RNFetchBlob.fs.mkdir(basePath)
-    }
-
-    return basePath
   }
 
   /*
@@ -195,7 +175,7 @@ class DownloadView extends React.Component {
     /*
     * get destination path of download based on os
     */
-    const baseDownloadPath = await this.getDownloadPath()
+    const baseDownloadPath = await DownloaderService.getDownloadPath()
     const filepath = `${baseDownloadPath}/${filename}`
 
     /*
@@ -318,33 +298,42 @@ class DownloadView extends React.Component {
           onRequestDownload={() => this.startProcessing()}
         />
 
-        <Content
-          contentContainerStyle={styles.container}
-        >
-          <MediaInfo
-            download={download}
-          />
+        <Grid>
+          <Row size={30}>
+            <MediaInfo
+              download={download}
+            />
+          </Row>
 
-          <Formats
-            formats={download.formats}
-            selectedFormat={selectedFormat}
-            onChangeFormat={(id) => this.onChangeFormat(id)}
-          />
+          <Row size={57}>
+            <Formats
+              formats={download.formats}
+              selectedFormat={selectedFormat}
+              onChangeFormat={(id) => this.onChangeFormat(id)}
+            />
+          </Row>
 
-          <View style={styles.downloadBtnContainer}>
-            <Button
-              iconLeft
-              danger
-              full
-              rounded
-              disabled={working}
-              onPress={() => this.startProcessing()}
-            >
-              <Icon name="download" />
-              <Text>{working ? 'Processing...' : 'Start Downloading'}</Text>
-            </Button>
-          </View>
-        </Content>
+          <Row
+            size={13}
+            style={styles.downloadBtnContainer}
+          >
+            <Col>
+              <Button
+                iconLeft
+                info
+                full
+                medium
+                disabled={working}
+                onPress={() => this.startProcessing()}
+              >
+                <Icon name="download" style={{ fontSize: 17 }} />
+                <Text style={{ fontSize: 12 }}>
+                  {working ? 'Starting ...' : 'Start Downloading'}
+                </Text>
+              </Button>
+            </Col>
+          </Row>
+        </Grid>
       </View>
     )
   }

@@ -11,19 +11,13 @@ export default StyleSheet.create({
   },
   /* media info */
   mediaInfoContainer: {
-    flex: 2,
-    flexDirection: 'row',
-    padding: padding,
-    paddingBottom: 0
+    padding: padding
   },
   mediaInfoRow: {
-    marginBottom: 5
-  },
-  thumbnailContainer: {
-    width: 120
-  },
-  fieldsContainer: {
-    width: width - (120 + 20)
+    height: 40,
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
+    marginBottom: 3
   },
   thumbnail: {
     width: 105,
@@ -32,25 +26,25 @@ export default StyleSheet.create({
     resizeMode: 'cover'
   },
   fieldName: {
-    fontSize: 15
+    height: 20,
+    fontSize: 14
   },
   fieldValue: {
+    height: 20,
     color: '#262626',
-    fontSize: 14
+    fontSize: 13
   },
   /* formats */
   formatsContainer: {
-    flex: 6,
     backgroundColor: 'transparent'
   },
   formatsListItem: {
-    flex: 1,
     backgroundColor: 'transparent'
   },
   formatsHeader: {
     paddingTop: 5,
-    paddingBottom: 6,
-    paddingLeft: padding + 3,
+    paddingLeft: padding + 5,
+    fontSize: 13,
     color: 'gray'
   },
   noFormat: {
@@ -61,9 +55,7 @@ export default StyleSheet.create({
   },
   /* download */
   downloadBtnContainer: {
-    flex: 1,
     alignItems: 'center',
-    justifyContent: 'flex-start',
     paddingLeft: padding,
     paddingRight: padding
   }

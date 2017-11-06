@@ -16,7 +16,7 @@ class ExploreView extends React.Component {
     super(props)
     this.state = {
       searching: false,
-      url: 'https://www.youtube.com/watch?v=DUT5rEU6pqM',
+      url: 'https://www.youtube.com/watch?v=Jd3vupvdNzM',
       isValidated: true
     }
   }
@@ -61,8 +61,22 @@ class ExploreView extends React.Component {
       })
 
     } catch(e) {
-      console.log(e.message)
-      console.log(e.response)
+      let errorText = 'Could not complete your request'
+
+      if (e.response) {
+        if (e.response.status === 401) {
+          return false
+        }
+
+        errorText = e.response.text
+      }
+
+      Toast.show({
+        text: errorText,
+        position: 'bottom',
+        duration: 2500
+      })
+
       this.setState({ searching: false })
     }
   }
@@ -77,58 +91,59 @@ class ExploreView extends React.Component {
     }
 
     return (
-      <Content contentContainerStyle={styles.container}>
-        <View style={styles.row}>
-          <Animatable.View
-            animation="pulse"
-            iterationCount="infinite"
-            duration={2000}
+      <View style={styles.container}>
+        <Content contentContainerStyle={styles.contentWrapper}>
+          <View style={styles.row}>
+            <Animatable.View
+              animation="pulse"
+              iterationCount="infinite"
+              duration={2000}
+            >
+              <Icon
+                active
+                name="cloud-download"
+                style={{
+                  fontSize: 140,
+                  color: '#ccc'
+                }}
+              />
+            </Animatable.View>
+          </View>
+
+          <View style={styles.row}>
+            <Item style={styles.urlContainer}>
+              <Icon
+                active
+                name={isValidated ? 'checkmark-circle' : 'link'}
+                style={{
+                  color: isValidated ? '#00C497' : '#33425b',
+                  fontSize: 20
+                }}
+              />
+
+              <Input
+                autoCapitalize="none"
+                style={{ fontSize: 13 }}
+                placeholderTextColor="#33425b"
+                placeholder="Paste video url here to download"
+                value={url}
+                onChangeText={(url) => this.onUrlChange(url)}
+              />
+            </Item>
+          </View>
+
+          <View
+            style={[styles.row, styles.mt20]}
           >
-            <Icon
-              active
-              name="cloud-download"
-              style={{
-                fontSize: 140,
-                color: '#ccc'
-              }}
-            />
-          </Animatable.View>
-        </View>
-
-        <View style={styles.row}>
-          <Item style={styles.urlContainer}>
-            <Icon
-              active
-              name={isValidated ? 'checkmark-circle' : 'link'}
-              style={{
-                color: isValidated ? '#00C497' : '#33425b',
-                fontSize: 20
-              }}
-            />
-
-            <Input
-              autoCapitalize="none"
-              style={{ fontSize: 13 }}
-              placeholderTextColor="#33425b"
-              placeholder="Paste video url here to download"
-              value={url}
-              onChangeText={(url) => this.onUrlChange(url)}
-            />
-          </Item>
-        </View>
-
-        <View
-          style={[styles.row, styles.mt20]}
-        >
-          <Button
-            info
-            rounded
-            onPress={() => this.explore()}
-          >
-            <Text>Search Link</Text>
-          </Button>
-        </View>
-      </Content>
+            <Button
+              info
+              onPress={() => this.explore()}
+            >
+              <Text>Search Link</Text>
+            </Button>
+          </View>
+        </Content>
+      </View>
     )
   }
 }

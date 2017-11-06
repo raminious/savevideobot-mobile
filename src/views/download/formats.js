@@ -1,6 +1,6 @@
 import React from 'react'
 import { ListView } from 'react-native'
-import { View, Text, ListItem, Left, Right, Body, Radio, CheckBox } from 'native-base'
+import { Col, Row, View, Text, ListItem, Left, Right, Body, Radio, CheckBox } from 'native-base'
 import styles from './styles'
 
 export default class extends React.Component {
@@ -18,14 +18,14 @@ export default class extends React.Component {
     const { ds } = this.state
 
     return (
-      <View style={styles.formatsContainer}>
-        <View>
+      <Col>
+        <Row size={10}>
           <Text style={styles.formatsHeader}>
             Available qualities ({formats.length}):
           </Text>
-        </View>
+        </Row>
 
-        <View>
+        <Row size={90}>
           {
             formats.length > 0 ?
             <ListView
@@ -37,8 +37,8 @@ export default class extends React.Component {
                   key={format.id}
                   onPress={() => onChangeFormat(format.id)}
                 >
-                  <CheckBox
-                    checked={format.id === selectedFormat}
+                  <Radio
+                    selected={format.id === selectedFormat}
                     onPress={() => onChangeFormat(format.id)}
                   />
 
@@ -52,8 +52,8 @@ export default class extends React.Component {
               There isn't any additonal quality options to choose.
             </Text>
           }
-        </View>
-      </View>
+        </Row>
+      </Col>
     )
   }
 }

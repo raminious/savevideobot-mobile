@@ -8,7 +8,7 @@ export class Picker extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      selected: {}
+      selected: props.defaultSelected || {}
     }
   }
 

@@ -26,13 +26,16 @@ Downloader.createTask = async function(id, downloadLink, filepath, resumable, st
   }
 
   const Task = new RNFetchBlob
-  .config({ // eslint-disable-line new-cap
-    addAdnroidDownloads: {
-      useDownloadManager: true,
-      notification: true,
-      description: `savevideobot - ${path.basename(filepath)}`,
-      mediaScannable: true,
-    },
+  .config({
+    // addAndroidDownloads: {
+    //   useDownloadManager: true,
+    //   title: path.basename(filepath),
+    //   description: `savevideobot - ${path.basename(filepath)}`,
+    //   mediaScannable : true,
+    //   notification : true,
+    //   path: filepath,
+    //   mime: 'video/mp4'
+    // },
     timeout: 15000,
     overwrite: startByte === 0,
     fileCache: true,
@@ -129,6 +132,35 @@ Downloader.onFinish = async function(id, result) {
 
   // clear task after 5 seconds
   setTimeout(() => Downloader.clearTask(id), 60000)
+}
+
+/*
+ * return download path based on platform
+ */
+Downloader.getDownloadPath = async function() {
+  let downloadPath
+  const dirs = RNFetchBlob.fs.dirs
+
+  const setting = db.find('Setting').filtered('name = "download-path"')
+
+  if (setting.length === 1) {
+    downloadPath = dirs[setting[0]]
+  }
+
+  if (!downloadPath) {
+    downloadPath = dirs.DownloadDir
+  }
+
+  // create full download path
+  const fullDownloadPath = `${downloadPath}/savevideobot`
+
+  const isDir = await RNFetchBlob.fs.isDir(fullDownloadPath)
+
+  if (!isDir) {
+    await RNFetchBlob.fs.mkdir(fullDownloadPath)
+  }
+
+  return fullDownloadPath
 }
 
 /**

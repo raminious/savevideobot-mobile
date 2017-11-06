@@ -1,10 +1,12 @@
 import React from 'react'
-import { View, Text } from 'native-base'
-import { Image } from 'react-native'
+import { Row, Col, View, Text } from 'native-base'
+import { Image, Dimensions } from 'react-native'
 import moment from 'moment'
 import 'moment-duration-format'
 import AsyncImage from '../../components/async-image'
 import styles from './styles'
+
+const { height, width } = Dimensions.get('window')
 
 function getTitle(title = '', max = 40) {
   return title.length <= max ?
@@ -15,22 +17,18 @@ function getTitle(title = '', max = 40) {
 export default ({
   download
 }) => (
-  <View style={styles.mediaInfoContainer}>
-    <View style={styles.thumbnailContainer}>
+  <Row style={styles.mediaInfoContainer}>
+    <Col style={{ width: 120 }}>
       <AsyncImage
         style={styles.thumbnail}
         media={download}
       />
-    </View>
+    </Col>
 
-    <View style={styles.fieldsContainer}>
+    <Col style={{ width: width - 120 }}>
       <View style={styles.mediaInfoRow}>
-        <Text style={styles.fieldName}>
-          Name
-        </Text>
-        <Text style={styles.fieldValue}>
-          {getTitle(download.title)}
-        </Text>
+        <Text style={styles.fieldName}>Name</Text>
+        <Text style={styles.fieldValue}>{getTitle(download.title)}</Text>
       </View>
 
       {
@@ -47,7 +45,6 @@ export default ({
           </Text>
         </View>
       }
-
-    </View>
- </View>
+    </Col>
+  </Row>
 )

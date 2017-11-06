@@ -2,12 +2,14 @@ import React from 'react'
 import { Provider } from 'react-redux'
 import { NativeRouter, Route, Link, AndroidBackButton } from 'react-router-native'
 import { StyleProvider, Root } from 'native-base'
+import codePush from 'react-native-code-push'
 import getTheme from './theme/components'
 import material from './theme/variables/material'
 import store from './src/store'
+import CrashReporter from './src/services/crash-reporter'
 import AppContainer from './src/layouts/container'
 
-export default class extends React.Component {
+class App extends React.Component {
   render() {
     return (
       <Provider store={store}>
@@ -24,3 +26,9 @@ export default class extends React.Component {
     )
   }
 }
+
+export default codePush({
+  checkFrequency: codePush.CheckFrequency.ON_APP_RESUME,
+  installMode: codePush.InstallMode.ON_NEXT_RESTART,
+  mandatoryInstallMode: codePush.InstallMode.IMMEDIATE
+})(App)

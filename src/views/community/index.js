@@ -26,7 +26,13 @@ class CommunityView extends React.Component {
   }
 
   componentDidMount() {
-    this.fetchTimeline()
+    const { live } = this.props
+
+    if (_.size(live.timeline) === 0) {
+      return this.fetchTimeline()
+    }
+
+    this.setTimer()
   }
 
   componentWillUnmount() {
@@ -38,9 +44,7 @@ class CommunityView extends React.Component {
 
     await fetchLiveTimeline()
 
-    fetchTimer = setTimeout(() => {
-      this.fetchTimeline()
-    }, 20000)
+    this.setTimer()
   }
 
   handleRefreshController() {
@@ -60,6 +64,12 @@ class CommunityView extends React.Component {
   getButtonCaption(extension) {
     const label = `Explore ${Media.getTypeByExtension(extension)}`
     return label.toUpperCase()
+  }
+
+  setTimer() {
+    fetchTimer = setTimeout(() => {
+      this.fetchTimeline()
+    }, 20000)
   }
 
   render() {
