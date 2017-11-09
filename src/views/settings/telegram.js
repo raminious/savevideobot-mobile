@@ -1,10 +1,16 @@
 import React from 'react'
+import { TouchableOpacity } from 'react-native'
 import { Icon, ListItem, Body, Left, Right, Text } from 'native-base'
 
 export default ({
+  onTelegramSetting,
   account
 }) => (
-  <ListItem icon>
+  <ListItem
+    button
+    icon
+    onPress={onTelegramSetting}
+  >
     <Left>
       <Icon name="ios-send" />
     </Left>
@@ -14,8 +20,10 @@ export default ({
     <Right>
       {
         account.telegram_id ?
-        <Text none>Connected</Text> :
-        <Text none>NO</Text>
+        <Text note>Connected</Text> :
+        <TouchableOpacity onPress={onTelegramSetting}>
+          <Icon name="cog" />
+        </TouchableOpacity>
       }
     </Right>
   </ListItem>

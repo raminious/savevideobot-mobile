@@ -4,9 +4,8 @@ import { connect } from 'react-redux'
 import { Content, View, Form, Input, Toast, Item, Label, Button, Icon, Text } from 'native-base'
 import * as Animatable from 'react-native-animatable'
 import EmailValidator from 'email-validator'
-import { login } from '../../actions/account'
+import { setUser, updateUserTable } from '../../actions/account'
 import User from '../../api/user'
-import db from '../../database'
 import Loading from '../../components/loading'
 import styles from './styles'
 
@@ -15,8 +14,8 @@ class LoginView extends React.Component {
     super(props)
 
     this.state = {
-      name: '',
       email: '',
+      password: '',
       working: false,
       validation: {
         email: false,
@@ -66,7 +65,7 @@ class LoginView extends React.Component {
 
   async submit() {
     const { email, password, validation } = this.state
-    const { login, history } = this.props
+    const { setUser, history } = this.props
 
     if (validation.email === false) {
       return Toast.show({
@@ -104,39 +103,30 @@ class LoginView extends React.Component {
       }
     }
 
-    db.save('User', {
-      id: user.id,
-      name: user.name,
-      username: user.username || '',
-      email: user.email,
-      telegram_id: user.telegram_id || null,
-      telegram_bot: this.getTelegramBot(user),
-      access_token: user.access_token,
-      date_modified: new Date(),
-    }, true)
+
+    // update database with new data
+    updateUserTable(user)
 
     // save user on redux
-    login(User.getIdentity())
+    setUser(user)
 
+    // push to explore view
     history.push('/')
-  }
-
-  getTelegramBot(user) {
-    return user.telegram_bot && user.telegram_bot.username ?
-      user.telegram_bot.username :
-      null
   }
 
   render() {
     const { validation, working, email, password } = this.state
 
-    return (
-      <View style={styles.container}>
+    if (working) {
+      return (
         <Loading
-          show={working}
           text="Signing in ..."
         />
+      )
+    }
 
+    return (
+      <View style={styles.container}>
         <Content contentContainerStyle={styles.container}>
           <View style={styles.logoContainer}>
             <Animatable.Image
@@ -213,4 +203,4 @@ function mapStateToProps({ app }) {
   return { app }
 }
 
-export default withRouter(connect(mapStateToProps, { login })(LoginView))
+export default withRouter(connect(mapStateToProps, { setUser })(LoginView))

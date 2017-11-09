@@ -2,7 +2,8 @@
 import { Platform } from 'react-native'
 
 // get dev server based on platform
-const devServer = Platform.OS === 'ios' ? 'http://127.0.0.1:17000' : 'http://192.168.1.100:17000'
+const devServer = 'http://192.168.1.100:17000'
+const telegramDevServer = 'http://192.168.1.100:15000/bot/dispatch'
 
 export default {
   sentry: {
@@ -10,5 +11,8 @@ export default {
   },
   api: {
     url: __DEV__ ? devServer : 'https://savevideobot.com/api'
+  },
+  telegram: {
+    url: __DEV__ ? telegramDevServer : 'https://savevideobot.com/telegram/dispatch'
   }
 }

@@ -5,13 +5,15 @@ import { Content, View, Toast, Button, Text, Icon, Col, Row, Grid } from 'native
 import { Platform, Image } from 'react-native'
 import RNFetchBlob from 'react-native-fetch-blob'
 import _ from 'underscore'
-import Header from './header'
-import MediaInfo from './media-info'
-import Formats from './formats'
 import Thumbnail from '../../services/thumbnail'
 import DownloaderService from '../../services/downloader'
 import db from '../../database'
 import Media from '../../api/media'
+import SendToTelegram from '../../services/telegram'
+import Header from './header'
+import MediaInfo from './media-info'
+import Formats from './formats'
+import CTA from './cta'
 import styles from './styles'
 
 class DownloadView extends React.Component {
@@ -287,6 +289,12 @@ class DownloadView extends React.Component {
     })
   }
 
+  sendToTelegram() {
+    const { history, download, account } = this.props
+    const { selectedFormat } = this.state
+    SendToTelegram(history, account, `/${download.id}${selectedFormat}`)
+  }
+
   render() {
     const { download } = this.props
     const { working, thumbnail, selectedFormat } = this.state
@@ -299,13 +307,13 @@ class DownloadView extends React.Component {
         />
 
         <Grid>
-          <Row size={30}>
+          <Row size={27}>
             <MediaInfo
               download={download}
             />
           </Row>
 
-          <Row size={57}>
+          <Row size={55}>
             <Formats
               formats={download.formats}
               selectedFormat={selectedFormat}
@@ -314,24 +322,14 @@ class DownloadView extends React.Component {
           </Row>
 
           <Row
-            size={13}
-            style={styles.downloadBtnContainer}
+            size={18}
+            style={styles.ctaContainer}
           >
-            <Col>
-              <Button
-                iconLeft
-                info
-                full
-                medium
-                disabled={working}
-                onPress={() => this.startProcessing()}
-              >
-                <Icon name="download" style={{ fontSize: 17 }} />
-                <Text style={{ fontSize: 12 }}>
-                  {working ? 'Starting ...' : 'Start Downloading'}
-                </Text>
-              </Button>
-            </Col>
+            <CTA
+              working={working}
+              startProcessing={() => this.startProcessing()}
+              sendToTelegram={() => this.sendToTelegram()}
+            />
           </Row>
         </Grid>
       </View>
@@ -339,8 +337,8 @@ class DownloadView extends React.Component {
   }
 }
 
-function mapStateToProps({ download }) {
-  return { download }
+function mapStateToProps({ account, download }) {
+  return { account, download }
 }
 
 export default withRouter(connect(mapStateToProps)(DownloadView))

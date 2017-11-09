@@ -2,6 +2,9 @@ import React from 'react'
 import { withRouter } from 'react-router-native'
 import { connect } from 'react-redux'
 import {
+  Grid,
+  Row,
+  Col,
   View,
   Button,
   Content,
@@ -14,12 +17,13 @@ import {
   Icon,
   Text
 } from 'native-base'
-import { Image, Alert, Platform, ActivityIndicator } from 'react-native'
+import { Image, Alert, ActivityIndicator } from 'react-native'
 import RNFetchBlob from 'react-native-fetch-blob'
 import mime from 'mime-types'
 import moment from 'moment'
 import db from '../../database'
 import ThumbnailService from '../../services/thumbnail'
+import SendToTelegram from '../../services/telegram'
 import Loading from '../../components/loading'
 import Header from './header'
 import styles from './styles'
@@ -88,12 +92,7 @@ class FileDetailView extends React.Component {
     const { media } = this.state
 
     const mimetype = mime.lookup(media.filename) || 'application/octet-stream'
-
-    if (Platform.OS === 'ios') {
-      RNFetchBlob.ios.openDocument(media.filepath).then(r => r, e => e)
-    } else {
-      RNFetchBlob.android.actionViewIntent(media.filepath, mimetype)
-    }
+    RNFetchBlob.android.actionViewIntent(media.filepath, mimetype)
   }
 
   /**
@@ -111,6 +110,15 @@ class FileDetailView extends React.Component {
       ],
       { cancelable: false }
     )
+  }
+
+  /**
+   *
+   */
+  sendToTelegram() {
+    const { history, account } = this.props
+    const { media } = this.state
+    SendToTelegram(history, account, media.url)
   }
 
   /**
@@ -194,44 +202,62 @@ class FileDetailView extends React.Component {
                     <Text style={styles.rowDesc}>{moment(media.date_created).format('Y/M/D HH:mm')}</Text>
                   </View>
 
-                  {
-                    Platform.OS !== 'ios' &&
-                    <View style={styles.row}>
-                      <Text style={styles.rowTitle}>Path</Text>
-                      <Text style={styles.rowDesc}>{media.filepath}</Text>
-                    </View>
-                  }
+                  <View style={styles.row}>
+                    <Text style={styles.rowTitle}>Saved Path</Text>
+                    <Text style={styles.rowDesc}>{media.filepath}</Text>
+                  </View>
                 </View>
               </CardItem>
 
               <CardItem footer>
-                <View style={styles.container}>
-                  <Button
-                    small
-                    full
-                    iconLeft
-                    bordered
-                    success
-                    style={styles.btnCta}
-                    onPress={() => this.openFile()}
-                  >
-                    <Icon name="open" />
-                    <Text>Open {media.type}</Text>
-                  </Button>
+                <Grid>
+                  <Row>
+                    <Col style={{ paddingRight: 3 }}>
+                      <Button
+                        small
+                        iconLeft
+                        bordered
+                        info
+                        full
+                        onPress={() => this.openFile()}
+                      >
+                        <Icon name="open" />
+                        <Text>Open {media.type}</Text>
+                      </Button>
+                    </Col>
 
-                  <Button
-                    small
-                    full
-                    iconLeft
-                    bordered
-                    danger
-                    style={styles.btnCta}
-                    onPress={() => this.requestDeleteFile()}
-                  >
-                    <Icon name="trash" />
-                    <Text>Delete {media.type}</Text>
-                  </Button>
-                </View>
+                    <Col style={{ paddingLeft: 3 }}>
+                      <Button
+                        small
+                        iconLeft
+                        bordered
+                        danger
+                        full
+                        onPress={() => this.requestDeleteFile()}
+                      >
+                        <Icon name="trash" />
+                        <Text>Delete {media.type}</Text>
+                      </Button>
+                    </Col>
+                  </Row>
+
+                  <Row style={{ marginTop: 6 }}>
+                    <Col>
+                      <Button
+                        small
+                        full
+                        iconLeft
+                        bordered
+                        dark
+                        style={styles.btnCta}
+                        onPress={() => this.sendToTelegram()}
+                      >
+                        <Icon name="send" />
+                        <Text>Send file to my Telegram</Text>
+                      </Button>
+                    </Col>
+                  </Row>
+                </Grid>
               </CardItem>
            </Card>
           </Content>
@@ -241,8 +267,8 @@ class FileDetailView extends React.Component {
   }
 }
 
-function mapStateToProps({ app, progress }) {
-  return { app }
+function mapStateToProps({ account }) {
+  return { account }
 }
 
 export default withRouter(connect(mapStateToProps)(FileDetailView))

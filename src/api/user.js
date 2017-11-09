@@ -14,12 +14,11 @@ User.getIdentity = function () {
 
     return {
       id: identity.id,
+      email: identity.email,
+      access_token: identity.access_token,
       name: identity.name,
       username: identity.username,
-      email: identity.email,
-      telegram_id: identity.telegram_id,
-      telegram_bot: identity.telegram_bot,
-      access_token: identity.access_token
+      telegram_id: identity.telegram_id
     }
   }
 
@@ -50,6 +49,22 @@ User.signup = async function (name, email, password) {
     const response = await new Fetch()
       .post('/user/signup')
       .send({ name, email, password })
+
+    return response.body
+  } catch(e) {
+    throw e
+  }
+}
+
+
+/**
+ *
+ */
+User.getInfo = async function (access_token = null) {
+  try {
+    const response = await new Fetch()
+      .get('/user/info')
+      .retry(2)
 
     return response.body
   } catch(e) {

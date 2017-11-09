@@ -8,7 +8,11 @@ import { logout } from '../../actions/account'
 
 export default class Fetch {
   constructor(options = {}) {
-    this._baseUrl = config.api.url
+    const properties = Object.assign({
+      server: 'api'
+    }, options)
+
+    this._baseUrl = config[properties.server].url
   }
 
   _create(method, endpoint) {
@@ -22,7 +26,7 @@ export default class Fetch {
 
     const agent = SuperAgent[method](`${this._baseUrl}${endpoint}`)
       .set('Accept', 'application/json')
-      .set('access-token', account.access_token)
+      .set('access-token', this.access_token || account.access_token)
       .set('app-version', App.version)
       .set('app-platform', 'mobile')
       .set('app-os', Platform.OS)
@@ -45,7 +49,7 @@ export default class Fetch {
   }
 
   onError(e) {
-    if (e.response.status === 401) {
+    if (e.response && e.response.status === 401) {
       this.onInvalidAccessToken()
     }
   }

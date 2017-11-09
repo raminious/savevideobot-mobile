@@ -4,9 +4,8 @@ import { connect } from 'react-redux'
 import { Content, View, Form, Input, Toast, Item, Label, Button, Icon, Text } from 'native-base'
 import * as Animatable from 'react-native-animatable'
 import EmailValidator from 'email-validator'
-import { login } from '../../actions/account'
+import { setUser, updateUserTable } from '../../actions/account'
 import User from '../../api/user'
-import db from '../../database'
 import Loading from '../../components/loading'
 import styles from './styles'
 
@@ -81,7 +80,7 @@ class SignupView extends React.Component {
 
   async submit() {
     const { name, email, password, validation } = this.state
-    const { login, history } = this.props
+    const { setUser, history } = this.props
 
     if (validation.name === false) {
       return Toast.show({
@@ -108,14 +107,14 @@ class SignupView extends React.Component {
     }
 
     // hold identity object
-    let identity = null
+    let user = null
 
     this.setState({
       saving: true
     })
 
     try {
-      identity = await User.signup(name, email, password)
+      user = await User.signup(name, email, password)
     } catch (e) {
       this.setState({ saving: false })
 
@@ -128,16 +127,11 @@ class SignupView extends React.Component {
       }
     }
 
-    db.save('User', {
-      name: identity.name,
-      username: identity.username || '',
-      email: identity.email,
-      access_token: identity.token,
-      date_modified: new Date(),
-    }, true)
+    // update database with new data
+    updateUserTable(user)
 
     // save identity on redux
-    login(User.getIdentity())
+    setUser(user)
 
     // show message
     Toast.show({
@@ -152,13 +146,16 @@ class SignupView extends React.Component {
   render() {
     const { validation, saving, name, email, password } = this.state
 
-    return (
-      <View style={styles.container}>
+    if (saving) {
+      return (
         <Loading
-          show={saving}
           text="Creating account ..."
         />
+      )
+    }
 
+    return (
+      <View style={styles.container}>
         <Content contentContainerStyle={styles.container}>
           <View style={styles.logoContainer}>
             <Animatable.Image
@@ -249,4 +246,4 @@ function mapStateToProps({ app }) {
   return { app }
 }
 
-export default withRouter(connect(mapStateToProps, { login })(SignupView))
+export default withRouter(connect(mapStateToProps, { setUser })(SignupView))

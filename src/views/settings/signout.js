@@ -1,4 +1,5 @@
 import React from 'react'
+import { Alert, TouchableOpacity } from 'react-native'
 import { Icon, ListItem, Body, Left, Right, Text } from 'native-base'
 import { withRouter } from 'react-router-native'
 import { connect } from 'react-redux'
@@ -30,13 +31,14 @@ const SignoutView = ({
       </Text>
     </Body>
     <Right>
-      <Text
-        note
-        onPress={() => signoutRequest()}
-        style={{ fontWeight: 'bold' }}
-      >
-        Logout
-      </Text>
+      <TouchableOpacity onPress={() => signoutRequest(logout)}>
+        <Text
+          note
+          style={{ fontWeight: 'bold' }}
+        >
+          Logout
+        </Text>
+      </TouchableOpacity>
     </Right>
   </ListItem>
 )

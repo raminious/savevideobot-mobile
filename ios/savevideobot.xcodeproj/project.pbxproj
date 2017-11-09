@@ -72,7 +72,6 @@
 		674BB3568AE34039AD9AD838 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB70DCA69A43466B8A43E69C /* CoreData.framework */; };
 		1F9C9BCA6DC849A6A1E02A5F /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B22933DDF1446E2B5F7C69A /* SystemConfiguration.framework */; };
 		BCA4538E6357482886AAB663 /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 34B04BDEC41C43D1B3F96757 /* libsqlite3.0.tbd */; };
-		26D8C3D8C2DE41DD840F9082 /* libRCTOneSignal.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CF9EE452F11E461E9493245D /* libRCTOneSignal.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -385,8 +384,6 @@
 		EB70DCA69A43466B8A43E69C /* CoreData.framework */ = {isa = PBXFileReference; name = "CoreData.framework"; path = "System/Library/Frameworks/CoreData.framework"; sourceTree = SDKROOT; fileEncoding = undefined; lastKnownFileType = wrapper.framework; explicitFileType = undefined; includeInIndex = 0; };
 		5B22933DDF1446E2B5F7C69A /* SystemConfiguration.framework */ = {isa = PBXFileReference; name = "SystemConfiguration.framework"; path = "System/Library/Frameworks/SystemConfiguration.framework"; sourceTree = SDKROOT; fileEncoding = undefined; lastKnownFileType = wrapper.framework; explicitFileType = undefined; includeInIndex = 0; };
 		34B04BDEC41C43D1B3F96757 /* libsqlite3.0.tbd */ = {isa = PBXFileReference; name = "libsqlite3.0.tbd"; path = "usr/lib/libsqlite3.0.tbd"; sourceTree = SDKROOT; fileEncoding = undefined; lastKnownFileType = sourcecode.text-based-dylib-definition; explicitFileType = undefined; includeInIndex = 0; };
-		C0EC04CD0ACE426BB7E67B57 /* RCTOneSignal.xcodeproj */ = {isa = PBXFileReference; name = "RCTOneSignal.xcodeproj"; path = "../node_modules/react-native-onesignal/ios/RCTOneSignal.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
-		CF9EE452F11E461E9493245D /* libRCTOneSignal.a */ = {isa = PBXFileReference; name = "libRCTOneSignal.a"; path = "libRCTOneSignal.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -428,7 +425,6 @@
 				674BB3568AE34039AD9AD838 /* CoreData.framework in Frameworks */,
 				1F9C9BCA6DC849A6A1E02A5F /* SystemConfiguration.framework in Frameworks */,
 				BCA4538E6357482886AAB663 /* libsqlite3.0.tbd in Frameworks */,
-				26D8C3D8C2DE41DD840F9082 /* libRCTOneSignal.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -635,7 +631,6 @@
 				6F4D48B7FB26429B9717B41C /* RNDeviceInfo.xcodeproj */,
 				0ACCA2D658E14B5C87FA35DA /* RNSentry.xcodeproj */,
 				5A2321A6382A4881A0E60FF4 /* RCTGoogleAnalyticsBridge.xcodeproj */,
-				C0EC04CD0ACE426BB7E67B57 /* RCTOneSignal.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -1304,15 +1299,12 @@
 					"$(SRCROOT)/../node_modules/react-native-device-info/RNDeviceInfo",
 					"$(SRCROOT)/../node_modules/react-native-sentry/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-google-analytics-bridge/ios/RCTGoogleAnalyticsBridge/**",
-					"$(SRCROOT)/../node_modules/react-native-onesignal/ios/RCTOneSignal/**",
 				);
 				INFOPLIST_FILE = savevideobotTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -1337,15 +1329,12 @@
 					"$(SRCROOT)/../node_modules/react-native-device-info/RNDeviceInfo",
 					"$(SRCROOT)/../node_modules/react-native-sentry/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-google-analytics-bridge/ios/RCTGoogleAnalyticsBridge/**",
-					"$(SRCROOT)/../node_modules/react-native-onesignal/ios/RCTOneSignal/**",
 				);
 				INFOPLIST_FILE = savevideobotTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -1371,7 +1360,6 @@
 					"$(SRCROOT)/../node_modules/react-native-device-info/RNDeviceInfo",
 					"$(SRCROOT)/../node_modules/react-native-sentry/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-google-analytics-bridge/ios/RCTGoogleAnalyticsBridge/**",
-					"$(SRCROOT)/../node_modules/react-native-onesignal/ios/RCTOneSignal/**",
 				);
 				INFOPLIST_FILE = savevideobot/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1399,7 +1387,6 @@
 					"$(SRCROOT)/../node_modules/react-native-device-info/RNDeviceInfo",
 					"$(SRCROOT)/../node_modules/react-native-sentry/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-google-analytics-bridge/ios/RCTGoogleAnalyticsBridge/**",
-					"$(SRCROOT)/../node_modules/react-native-onesignal/ios/RCTOneSignal/**",
 				);
 				INFOPLIST_FILE = savevideobot/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1434,14 +1421,11 @@
 					"$(SRCROOT)/../node_modules/react-native-device-info/RNDeviceInfo",
 					"$(SRCROOT)/../node_modules/react-native-sentry/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-google-analytics-bridge/ios/RCTGoogleAnalyticsBridge/**",
-					"$(SRCROOT)/../node_modules/react-native-onesignal/ios/RCTOneSignal/**",
 				);
 				INFOPLIST_FILE = "savevideobot-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -1476,14 +1460,11 @@
 					"$(SRCROOT)/../node_modules/react-native-device-info/RNDeviceInfo",
 					"$(SRCROOT)/../node_modules/react-native-sentry/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-google-analytics-bridge/ios/RCTGoogleAnalyticsBridge/**",
-					"$(SRCROOT)/../node_modules/react-native-onesignal/ios/RCTOneSignal/**",
 				);
 				INFOPLIST_FILE = "savevideobot-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -1512,8 +1493,6 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.savevideobot-tvOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1538,8 +1517,6 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.savevideobot-tvOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";

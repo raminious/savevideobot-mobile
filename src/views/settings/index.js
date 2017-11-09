@@ -16,6 +16,16 @@ class SettingsView extends React.Component {
     super(props)
   }
 
+  onTelegramSetting() {
+    const { account, history } = this.props
+
+    if (account.telegram_id) {
+      return false
+    }
+
+    history.push('/telegram/integration')
+  }
+
   render() {
     const { account } = this.props
 
@@ -55,6 +65,7 @@ class SettingsView extends React.Component {
 
             <TelegramView
               account={account}
+              onTelegramSetting={() => this.onTelegramSetting()}
             />
 
             <ListItem itemDivider icon>

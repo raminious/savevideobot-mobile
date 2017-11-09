@@ -1,0 +1,4 @@
+#!/bin/bash
+code-push release-react savevideobot-android android --outputDir build
+export SENTRY_PROPERTIES=./android/sentry.properties
+sentry-cli react-native codepush savevideobot-android android ./build

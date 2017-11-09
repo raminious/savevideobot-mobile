@@ -6,3 +6,10 @@ export function setConnectionSataus(connected) {
     connected
   }
 }
+
+export function setAppState(state) {
+  return {
+    type: types.SET_APP_STATE,
+    state
+  }
+}

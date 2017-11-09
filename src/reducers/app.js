@@ -1,7 +1,8 @@
 import * as types from '../constants/app'
 
 const initialState = {
-  isOnline: ''
+  isOnline: '',
+  state: 'active'
 }
 
 export default (state = initialState, action) => {
@@ -10,6 +11,12 @@ export default (state = initialState, action) => {
       return {
         ...state,
         isOnline: action.connected
+      }
+
+    case types.SET_APP_STATE:
+      return {
+        ...state,
+        state: action.state
       }
 
     default:

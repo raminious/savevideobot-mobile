@@ -54,8 +54,7 @@ export default StyleSheet.create({
     fontSize: 13
   },
   /* download */
-  downloadBtnContainer: {
-    alignItems: 'center',
+  ctaContainer: {
     paddingLeft: padding,
     paddingRight: padding
   }

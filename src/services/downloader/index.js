@@ -5,6 +5,7 @@ import store from '../../store'
 import Media from '../../api/media'
 import httpErrors from '../../utils/http-errors'
 import { addProgress, updateProgress, removeProgress } from '../../actions/progress'
+import { sendLocalNotification } from '../notification'
 
 const Downloader = {}
 
@@ -130,6 +131,9 @@ Downloader.onFinish = async function(id, result) {
     done: true
   }))
 
+  // send notification
+  Downloader.sendNotification(id)
+
   // clear task after 5 seconds
   setTimeout(() => Downloader.clearTask(id), 60000)
 }
@@ -220,13 +224,38 @@ Downloader.resumeTask = async function(id) {
   Downloader.createTask(id, link, filepath, resumable, startByte)
 }
 
-
 /**
  *
  */
 Downloader.getTask = function(id) {
   const { progress } = store.getState()
   return progress[id]
+}
+
+/**
+ *
+ */
+Downloader.sendNotification = function(id) {
+  if (Downloader.getAppState() === 'active') {
+    return false
+  }
+
+  const media =  db
+    .find('Media')
+    .filtered(`id = '${id}'`)
+
+  sendLocalNotification({
+    title: 'Download finished',
+    message: media[0].title
+  })
+}
+
+/**
+ *
+ */
+Downloader.getAppState = function() {
+  const { app } = store.getState()
+  return app.state
 }
 
 export default Downloader

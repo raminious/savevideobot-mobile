@@ -13,7 +13,7 @@ export default ({
       <Text note>Version</Text>
     </Body>
     <Right>
-      <Text none>{App.version}</Text>
+      <Text note>{App.version}</Text>
     </Right>
   </ListItem>
 )

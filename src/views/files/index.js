@@ -163,6 +163,10 @@ class FilesView extends React.Component {
   onToggleLike(id, favorite) {
     db.save('Media', { id, favorite }, true)
 
+    if (!favorite) {
+      return false
+    }
+
     this.renderListView({
       updating: true
     })

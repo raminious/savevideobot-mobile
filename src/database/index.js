@@ -7,7 +7,7 @@ import Setting from './setting'
 
 const realm = new Realm({
   schema: [Media, User, Setting],
-  schemaVersion: 6,
+  schemaVersion: 9
 })
 
 /*

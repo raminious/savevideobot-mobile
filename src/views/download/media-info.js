@@ -25,7 +25,7 @@ export default ({
       />
     </Col>
 
-    <Col style={{ width: width - 120 }}>
+    <Col style={{ width: width - 130 }}>
       <View style={styles.mediaInfoRow}>
         <Text style={styles.fieldName}>Name</Text>
         <Text style={styles.fieldValue}>{getTitle(download.title)}</Text>

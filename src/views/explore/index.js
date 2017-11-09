@@ -16,7 +16,7 @@ class ExploreView extends React.Component {
     super(props)
     this.state = {
       searching: false,
-      url: 'https://www.youtube.com/watch?v=Jd3vupvdNzM',
+      url: 'https://www.instagram.com/p/BbPC_o-luKB',
       isValidated: true
     }
   }

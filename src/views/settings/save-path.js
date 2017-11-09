@@ -1,5 +1,6 @@
 import React from 'react'
 import { View, Icon, ListItem, Body, Left, Right, Text } from 'native-base'
+import { TouchableOpacity } from 'react-native'
 import RNFetchBlob from 'react-native-fetch-blob'
 import _ from 'underscore'
 import { Picker, PickerSection, PickerOption } from '../../components/picker'
@@ -56,12 +57,11 @@ export default class extends React.Component {
           </Body>
 
           <Right>
-            <Text
-              note
-              onPress={() => this.showPicker(true)}
-            >
-              {downloadPath}/savevideobot
-            </Text>
+            <TouchableOpacity onPress={() => this.showPicker(true)}>
+              <Text note>
+                ./{downloadPath}/savevideobot
+              </Text>
+            </TouchableOpacity>
           </Right>
         </ListItem>
 
