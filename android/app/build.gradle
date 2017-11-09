@@ -105,10 +105,6 @@ android {
         targetSdkVersion 22
         versionCode 1
         versionName "1.0"
-        manifestPlaceholders = [
-            onesignal_app_id: "b76dc936-ef60-4775-917b-952cdc50a440",
-            onesignal_google_project_number: "REMOTE"
-        ]
 
         ndk {
             abiFilters "armeabi-v7a", "x86"
@@ -171,7 +167,6 @@ android {
 }
 
 dependencies {
-    compile project(':react-native-onesignal')
     compile project(':react-native-push-notification')
     compile project(':react-native-google-analytics-bridge')
     compile project(':react-native-sentry')
