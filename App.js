@@ -9,23 +9,19 @@ import store from './src/store'
 import CrashReporter from './src/services/crash-reporter'
 import AppContainer from './src/layouts/container'
 
-class App extends React.Component {
-  render() {
-    return (
-      <Provider store={store}>
-        <NativeRouter>
-          <AndroidBackButton>
-            <StyleProvider style={getTheme(material)}>
-              <Root>
-                <Route path="/" component={AppContainer} />
-              </Root>
-            </StyleProvider>
-          </AndroidBackButton>
-        </NativeRouter>
-      </Provider>
-    )
-  }
-}
+const App = () => (
+  <Provider store={store}>
+    <NativeRouter>
+      <AndroidBackButton>
+        <StyleProvider style={getTheme(material)}>
+          <Root>
+            <Route path="/" component={AppContainer} />
+          </Root>
+        </StyleProvider>
+      </AndroidBackButton>
+    </NativeRouter>
+  </Provider>
+)
 
 export default codePush({
   checkFrequency: codePush.CheckFrequency.ON_APP_RESUME,
