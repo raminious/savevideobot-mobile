@@ -6,6 +6,8 @@ import { Container, View, Text } from 'native-base'
 import IntroView from '../views/intro'
 import LoginView from '../views/login'
 import SignupView from '../views/signup'
+import ForgetPasswordView from '../views/password/forget'
+import ResetPasswordView from '../views/password/reset'
 
 const AuthenticationContainer = (props) => {
   return (
@@ -14,6 +16,8 @@ const AuthenticationContainer = (props) => {
         <Route exact path="/auth" component={IntroView} />
         <Route exact path="/auth/login" component={LoginView} />
         <Route exact path="/auth/signup" component={SignupView} />
+        <Route exact path="/auth/password/forget" component={ForgetPasswordView} />
+        <Route exact path="/auth/password/reset/:userId" component={ResetPasswordView} />
       </View>
     </Container>
   )

@@ -2,9 +2,9 @@ import React from 'react'
 import { withRouter } from 'react-router-native'
 import { connect } from 'react-redux'
 import { Content, View, Form, Input, Toast, Item, Label, Button, Icon, Text } from 'native-base'
-import * as Animatable from 'react-native-animatable'
 import EmailValidator from 'email-validator'
 import { setUser, updateUserTable } from '../../actions/account'
+import AnimatedLogo from '../../components/animated-logo'
 import User from '../../api/user'
 import Loading from '../../components/loading'
 import styles from './styles'
@@ -51,6 +51,11 @@ class LoginView extends React.Component {
   goToSignupPage() {
     const { history } = this.props
     history.push('/auth/signup')
+  }
+
+  goToForgetPasswordPage() {
+    const { history } = this.props
+    history.push('/auth/password/forget')
   }
 
   getIconStyle(type) {
@@ -128,16 +133,7 @@ class LoginView extends React.Component {
     return (
       <View style={styles.container}>
         <Content contentContainerStyle={styles.container}>
-          <View style={styles.logoContainer}>
-            <Animatable.Image
-              animation="pulse"
-              iterationCount="infinite"
-              duration={2000}
-              // eslint-disable-next-line global-require
-              source={require('../../assets/logo/savevideobot-76x76.png')}
-              style={{ marginBottom: 30 }}
-            />
-          </View>
+          <AnimatedLogo />
 
           <View style={styles.formContainer}>
             <Form>
@@ -183,12 +179,26 @@ class LoginView extends React.Component {
 
               <Button
                 full
+                primary
+                small
                 transparent
+                style={styles.forgetPassword}
+                onPress={() => this.goToForgetPasswordPage()}
+              >
+                <Text>
+                  Forget your password?
+                </Text>
+              </Button>
+
+              <Button
+                full
+                transparent
+                small
                 style={styles.cancel}
                 onPress={() => this.goToSignupPage()}
               >
-                <Text style={styles.cancelText}>
-                  Create new account
+                <Text note>
+                  I Don't have an account
                 </Text>
               </Button>
             </Form>

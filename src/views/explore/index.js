@@ -6,6 +6,7 @@ import { View, Toast, Item, Text, Content, InputGroup, Input, Label, Icon, Butto
 import * as Animatable from 'react-native-animatable'
 import Loading from '../../components/loading'
 import { setMedia } from '../../actions/download'
+import { setSharedLink } from '../../actions/app'
 import Media from '../../api/media'
 import styles from './styles'
 
@@ -16,9 +17,34 @@ class ExploreView extends React.Component {
     super(props)
     this.state = {
       searching: false,
-      url: 'https://www.instagram.com/p/BbPC_o-luKB',
-      isValidated: true
+      url: '',
+      isValidated: false
     }
+  }
+
+  componentDidMount() {
+    const { app } = this.props
+    this.checkForSharedLink(app)
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { app } = nextProps
+    this.checkForSharedLink(app)
+  }
+
+  checkForSharedLink({ sharedLink }) {
+    const { searching } = this.state
+
+    if (searching || !sharedLink || !urlPattern.test(sharedLink)) {
+      return false
+    }
+
+    this.setState({
+      url: sharedLink,
+      isValidated: true
+    }, () => this.explore())
+
+    this.props.setSharedLink(null)
   }
 
   onUrlChange(url) {
@@ -37,7 +63,7 @@ class ExploreView extends React.Component {
 
     if (!isValidated){
       return Toast.show({
-        text: 'Enter a valid link',
+        text: 'Enter a valid download link',
         position: 'bottom',
         buttonText: 'Okay'
       })
@@ -86,7 +112,7 @@ class ExploreView extends React.Component {
 
     if (searching) {
       return (
-        <Loading text="Searching..." />
+        <Loading text="Getting Link Information..." />
       )
     }
 
@@ -153,4 +179,4 @@ function mapStateToProps({ app }) {
   return { app }
 }
 
-export default withRouter(connect(mapStateToProps, { setMedia })(ExploreView))
+export default withRouter(connect(mapStateToProps, { setMedia, setSharedLink })(ExploreView))

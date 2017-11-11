@@ -2,10 +2,10 @@ import React from 'react'
 import { withRouter } from 'react-router-native'
 import { connect } from 'react-redux'
 import { Content, View, Form, Input, Toast, Item, Label, Button, Icon, Text } from 'native-base'
-import * as Animatable from 'react-native-animatable'
 import EmailValidator from 'email-validator'
 import { setUser, updateUserTable } from '../../actions/account'
 import User from '../../api/user'
+import AnimatedLogo from '../../components/animated-logo'
 import Loading from '../../components/loading'
 import styles from './styles'
 
@@ -155,89 +155,78 @@ class SignupView extends React.Component {
     }
 
     return (
-      <View style={styles.container}>
-        <Content contentContainerStyle={styles.container}>
-          <View style={styles.logoContainer}>
-            <Animatable.Image
-              animation="pulse"
-              iterationCount="infinite"
-              duration={2000}
-              // eslint-disable-next-line global-require
-              source={require('../../assets/logo/savevideobot-76x76.png')}
-              style={{ marginBottom: 30 }}
-            />
-          </View>
+      <Content contentContainerStyle={styles.container}>
+        <AnimatedLogo />
 
-          <View style={styles.formContainer}>
-            <Form>
-              <Item floatingLabel>
-                <Icon
-                  name={validation.name ? 'checkmark-circle' : 'contact'}
-                  style={this.getIconStyle('name')}
-                />
-                <Label>Your name</Label>
-                <Input
-                  autoCapitalize="none"
-                  autoCorrect={false}
-                  returnKeyType="next"
-                  value={name}
-                  onChangeText={(text) => this.onNameChange(text)}
-                />
-              </Item>
+        <View style={styles.formContainer}>
+          <Form>
+            <Item floatingLabel>
+              <Icon
+                name={validation.name ? 'checkmark-circle' : 'contact'}
+                style={this.getIconStyle('name')}
+              />
+              <Label>Your name</Label>
+              <Input
+                autoCapitalize="none"
+                autoCorrect={false}
+                returnKeyType="next"
+                value={name}
+                onChangeText={(text) => this.onNameChange(text)}
+              />
+            </Item>
 
-              <Item floatingLabel>
-                <Icon
-                  name={validation.email ? 'checkmark-circle' : 'at'}
-                  style={this.getIconStyle('email')}
-                />
-                <Label>Your email address</Label>
-                <Input
-                  autoCapitalize="none"
-                  keyboardType="email-address"
-                  autoCorrect={false}
-                  returnKeyType="next"
-                  value={email}
-                  onChangeText={(text) => this.onEmailChange(text)}
-                />
-              </Item>
+            <Item floatingLabel>
+              <Icon
+                name={validation.email ? 'checkmark-circle' : 'at'}
+                style={this.getIconStyle('email')}
+              />
+              <Label>Your email address</Label>
+              <Input
+                autoCapitalize="none"
+                keyboardType="email-address"
+                autoCorrect={false}
+                returnKeyType="next"
+                value={email}
+                onChangeText={(text) => this.onEmailChange(text)}
+              />
+            </Item>
 
-              <Item floatingLabel>
-                <Icon
-                  name={validation.password ? 'checkmark-circle' : 'lock'}
-                  style={this.getIconStyle('password')}
-                />
-                <Label>Type a secure password</Label>
-                <Input
-                  autoCapitalize="none"
-                  autoCorrect={false}
-                  returnKeyType="done"
-                  value={password}
-                  onChangeText={(text) => this.onPasswordChange(text)}
-                />
-              </Item>
+            <Item floatingLabel>
+              <Icon
+                name={validation.password ? 'checkmark-circle' : 'lock'}
+                style={this.getIconStyle('password')}
+              />
+              <Label>Type a secure password</Label>
+              <Input
+                autoCapitalize="none"
+                autoCorrect={false}
+                returnKeyType="done"
+                value={password}
+                onChangeText={(text) => this.onPasswordChange(text)}
+              />
+            </Item>
 
-              <Button
-                full
-                style={styles.signup}
-                onPress={() => this.submit()}
-              >
-                <Text>Signup</Text>
-              </Button>
+            <Button
+              full
+              style={styles.signup}
+              onPress={() => this.submit()}
+            >
+              <Text>Signup</Text>
+            </Button>
 
-              <Button
-                full
-                transparent
-                style={styles.cancel}
-                onPress={() => this.goToLoginPage()}
-              >
-                <Text style={styles.cancelText}>
-                  I already have an account
-                </Text>
-              </Button>
-            </Form>
-          </View>
-        </Content>
-      </View>
+            <Button
+              full
+              transparent
+              style={styles.cancel}
+              onPress={() => this.goToLoginPage()}
+            >
+              <Text style={styles.cancelText}>
+                I already have an account
+              </Text>
+            </Button>
+          </Form>
+        </View>
+      </Content>
     )
   }
 }

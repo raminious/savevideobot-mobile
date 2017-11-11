@@ -3,6 +3,7 @@ import { Route, Switch, Redirect, withRouter } from 'react-router-native'
 import { connect } from 'react-redux'
 import { AppState, StyleSheet } from 'react-native'
 import { Container, View, Content } from 'native-base'
+import ShareMenu from 'react-native-share-menu'
 import TabsNavigation from './navigation'
 import ExploreView from '../views/explore'
 import DownloadView from '../views/download'
@@ -12,7 +13,7 @@ import FileDetailView from '../views/file-detail'
 import SettingsView from '../views/settings'
 import CommunityView from '../views/community'
 import TelegramIntegrationView from '../views/telegram-integration'
-import { setAppState } from '../actions/app'
+import { setAppState, setSharedLink } from '../actions/app'
 
 class ApplicationContainer extends React.Component {
   constructor(props) {
@@ -31,9 +32,31 @@ class ApplicationContainer extends React.Component {
     AppState.removeEventListener('change', this.stateListener)
   }
 
-  handleAppStateChange(nextAppState) {
+  handleAppStateChange(nextState) {
+    const { app } = this.props
+
     // set app new state
-    this.props.setAppState(nextAppState)
+    this.props.setAppState(nextState)
+
+    // handle new link receiving from share menu
+    if (nextState === 'active' && nextState !== app.state) {
+      ShareMenu.getSharedText((link) => this.onNewSharedLink(link))
+    }
+  }
+
+  onNewSharedLink(link) {
+    if (!link || link.length === 0) {
+      return false
+    }
+
+    // clear shared text
+    ShareMenu.clearSharedText()
+
+    // set redux store
+    this.props.setSharedLink(link)
+
+    // navigate to explore view
+    this.props.history.push('/')
   }
 
   render() {
@@ -67,10 +90,10 @@ const styles = StyleSheet.create({
   }
 })
 
-function mapStateToProps({ app, account }) {
-  return { account, app }
+function mapStateToProps({ app }) {
+  return { app }
 }
 
 export default withRouter(connect(mapStateToProps, {
-  setAppState
+  setAppState, setSharedLink
 })(ApplicationContainer))

@@ -7,12 +7,6 @@ export default StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center'
   },
-  logoContainer: {
-    flex: 1.5,
-    marginBottom: height / 18,
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
   textContainer: {
     flex: 2,
     marginLeft: width / 20,

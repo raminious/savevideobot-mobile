@@ -6,20 +6,8 @@ export default StyleSheet.create({
     flex: 1,
     justifyContent: 'center'
   },
-  logoContainer: {
-    flex: 3,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   formContainer: {
     flex: 7
-  },
-  input: {
-    padding: 3,
-    marginLeft: width / 10,
-    marginRight: width / 10,
-    borderRadius: 4,
-    marginBottom: 5
   },
   buttonsContainer: {
     width,
@@ -32,6 +20,12 @@ export default StyleSheet.create({
     marginRight: 15,
     marginTop: 30,
     borderRadius: 5
+  },
+  forgetPassword: {
+    marginTop: 10
+  },
+  cancel: {
+    marginTop: 15
   },
   cancelText: {
     color: '#29252c',

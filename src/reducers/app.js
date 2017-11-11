@@ -2,7 +2,8 @@ import * as types from '../constants/app'
 
 const initialState = {
   isOnline: '',
-  state: 'active'
+  state: '',
+  sharedLink: null
 }
 
 export default (state = initialState, action) => {
@@ -17,6 +18,12 @@ export default (state = initialState, action) => {
       return {
         ...state,
         state: action.state
+      }
+
+    case types.SET_SHARED_LINK:
+      return {
+        ...state,
+        sharedLink: action.link
       }
 
     default:

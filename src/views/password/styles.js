@@ -3,33 +3,33 @@ const { height, width } = Dimensions.get('window')
 
 export default StyleSheet.create({
   container: {
-    flex: 1
-  },
-  formContainer: {
-    flex: 7,
+    flex: 1,
     justifyContent: 'center'
   },
-  input: {
-    padding: 3,
+  formContainer: {
+    flex: 7
+  },
+  horizontalRow: {
+    flexDirection: 'row',
+    marginTop: 10,
     marginLeft: 15,
-    marginRight: 15,
-    borderRadius: 4,
-    marginBottom: 5
+    marginRight: 15
   },
-  buttonsContainer: {
-    width,
-    alignItems: 'center',
-    marginTop: 30,
+  radioButton: {
+    marginRight: 15
   },
-  signup: {
+  inputPinCode: {
+    margin: 10,
+    marginLeft: 10,
+    borderColor: '#2196f3',
+    borderWidth: 1.5,
+    borderRadius: 5
+  },
+  btnSubmit: {
     alignItems: 'center',
     marginLeft: 15,
     marginRight: 15,
     marginTop: 30,
     borderRadius: 5
-  },
-  cancelText: {
-    color: '#29252c',
-    fontSize: 13
   }
 })

@@ -3,6 +3,7 @@ package com.savevideobot;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.meedan.ShareMenuPackage;
 import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
 import com.idehub.GoogleAnalyticsBridge.GoogleAnalyticsBridgePackage;
 import io.sentry.RNSentryPackage;
@@ -37,6 +38,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new ShareMenuPackage(),
             new ReactNativePushNotificationPackage(),
             new GoogleAnalyticsBridgePackage(),
             new RNSentryPackage(MainApplication.this),

@@ -2,7 +2,7 @@ import React from 'react'
 import { withRouter } from 'react-router-native'
 import { connect } from 'react-redux'
 import { Content, View, Button, Icon, Text } from 'native-base'
-import * as Animatable from 'react-native-animatable'
+import AnimatedLogo from '../../components/animated-logo'
 import styles from './styles'
 
 class IntroView extends React.Component {
@@ -25,16 +25,9 @@ class IntroView extends React.Component {
       <View style={styles.container}>
         <Content contentContainerStyle={styles.container}>
 
-          <View style={styles.logoContainer}>
-            <Animatable.Image
-              animation="pulse"
-              iterationCount="infinite"
-              duration={2000}
-              // eslint-disable-next-line global-require
-              source={require('../../assets/logo/savevideobot-76x76.png')}
-              style={{ marginBottom: 30 }}
-            />
-          </View>
+          <AnimatedLogo
+            flexSize={2}
+          />
 
           <View style={styles.textContainer}>
             <Text style={styles.title}>
@@ -50,7 +43,7 @@ class IntroView extends React.Component {
             <View style={{ flexDirection: 'row' }}>
               <Button
                 onPress={() => this.register()}
-                style={[styles.button, styles.signup]}
+                primary
                 iconLeft
               >
                 <Icon name="body" />
@@ -60,6 +53,7 @@ class IntroView extends React.Component {
               <Button
                 info
                 iconLeft
+                success
                 onPress={() => this.login()}
                 style={[styles.button]}
               >

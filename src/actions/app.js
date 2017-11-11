@@ -13,3 +13,10 @@ export function setAppState(state) {
     state
   }
 }
+
+export function setSharedLink(link) {
+  return {
+    type: types.SET_SHARED_LINK,
+    link
+  }
+}

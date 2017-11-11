@@ -56,6 +56,35 @@ User.signup = async function (name, email, password) {
   }
 }
 
+/**
+ *
+ */
+User.forgetPassword = async function (email, sendTo) {
+  try {
+    const response = await new Fetch()
+      .post('/user/password/forget')
+      .send({ email, sendTo })
+
+    return response.body
+  } catch(e) {
+    throw e
+  }
+}
+
+/**
+ *
+ */
+User.resetPassword = async function (userId, pinCode, newPassword) {
+  try {
+    const response = await new Fetch()
+      .post('/user/password/reset')
+      .send({ userId, pinCode, newPassword })
+
+    return response.body
+  } catch(e) {
+    throw e
+  }
+}
 
 /**
  *
