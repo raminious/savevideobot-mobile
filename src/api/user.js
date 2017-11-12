@@ -28,18 +28,34 @@ User.getIdentity = function () {
 /**
  *
  */
-User.signin = async function (email, password) {
+User.signin = async function (email, password, terminateOtherSessions = false) {
   try {
     const response = await new Fetch()
       .post('/user/access-token')
       .send({ method: 'credential' })
-      .send({ email, password })
+      .send({ email, password, terminateOtherSessions })
 
     return response.body
   } catch(e) {
     throw e
   }
 }
+
+/**
+ *
+ */
+User.signout = async function (token) {
+  try {
+    const response = await new Fetch()
+      .post('/user/remove-token')
+      .send({ token })
+
+    return response.body
+  } catch(e) {
+    throw e
+  }
+}
+
 
 /**
  *

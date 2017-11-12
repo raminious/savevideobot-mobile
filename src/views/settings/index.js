@@ -3,8 +3,10 @@ import { withRouter } from 'react-router-native'
 import { connect } from 'react-redux'
 import { Share, Platform, StyleSheet, Alert, Linking } from 'react-native'
 import { View, Text, Content, Icon, List, ListItem, Left, Right, Body, Switch } from 'native-base'
+import { logout } from '../../actions/account'
+import User from '../../api/user'
 import Header from './header'
-import SignoutView from './signout'
+import EmailView from './email'
 import SubscriptionView from './subscription'
 import SavePathView from './save-path'
 import AppVersionView from './app-version'
@@ -26,12 +28,35 @@ class SettingsView extends React.Component {
     history.push('/telegram/integration')
   }
 
+  signoutRequest() {
+    Alert.alert(
+      'Logout',
+      'Are you sure?',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        { text: 'Yes, Logout', onPress: () => this.sinout()}
+      ]
+    )
+  }
+
+  sinout() {
+    const { account, logout } = this.props
+
+    // remove user token
+    User.signout(account.access_token)
+
+    // logout user
+    logout()
+  }
+
   render() {
     const { account } = this.props
 
     return (
       <View style={styles.container}>
-        <Header />
+        <Header
+          onRequestSignout={() => this.signoutRequest()}
+        />
 
         <Content>
           <List>
@@ -49,7 +74,7 @@ class SettingsView extends React.Component {
               </Body>
             </ListItem>
 
-            <SignoutView
+            <EmailView
               account={account}
             />
 
@@ -89,4 +114,4 @@ function mapStateToProps({ app, account }) {
   return { app, account }
 }
 
-export default withRouter(connect(mapStateToProps)(SettingsView))
+export default withRouter(connect(mapStateToProps, { logout })(SettingsView))

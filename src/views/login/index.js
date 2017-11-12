@@ -1,6 +1,7 @@
 import React from 'react'
 import { withRouter } from 'react-router-native'
 import { connect } from 'react-redux'
+import { Alert } from 'react-native'
 import { Content, View, Form, Input, Toast, Item, Label, Button, Icon, Text } from 'native-base'
 import EmailValidator from 'email-validator'
 import { setUser, updateUserTable } from '../../actions/account'
@@ -14,12 +15,12 @@ class LoginView extends React.Component {
     super(props)
 
     this.state = {
-      email: '',
-      password: '',
+      email: 'ramin.mousavy@gmail.com',
+      password: 'sep123$%^',
       working: false,
       validation: {
-        email: false,
-        password: false
+        email: true,
+        password: true
       }
     }
   }
@@ -68,7 +69,7 @@ class LoginView extends React.Component {
     }
   }
 
-  async submit() {
+  async submit(terminateOtherSessions = false) {
     const { email, password, validation } = this.state
     const { setUser, history } = this.props
 
@@ -95,17 +96,19 @@ class LoginView extends React.Component {
     this.setState({ working: true })
 
     try {
-      user = await User.signin(email, password)
+      user = await User.signin(email, password, terminateOtherSessions)
     } catch (e) {
       this.setState({ working: false })
 
-      if (e) {
-        return Toast.show({
-          text: e.response ? e.response.text : e.message,
-          position: 'bottom',
-          buttonText: 'Okay'
-        })
+      if (e.response && e.response.status === 403) {
+        return this.requestRemoveOtherSessions()
       }
+
+      return Toast.show({
+        text: e.response ? e.response.text : e.message,
+        position: 'bottom',
+        buttonText: 'Okay'
+      })
     }
 
 
@@ -117,6 +120,19 @@ class LoginView extends React.Component {
 
     // push to explore view
     history.push('/')
+  }
+
+  requestRemoveOtherSessions() {
+    Alert.alert(
+      'To many sessions',
+      'You have logged in with too many devices. ' +
+        'Do you want to terminate them all and login into your account ?',
+      [
+        {text: 'Cancel', onPress: () => null, style: 'cancel'},
+        {text: 'Yes, Continue', onPress: () => this.submit(true)},
+      ],
+      { cancelable: false }
+    )
   }
 
   render() {
