@@ -2,14 +2,22 @@ import React from 'react'
 import { TouchableOpacity } from 'react-native'
 import { Icon, ListItem, Body, Left, Right, Text } from 'native-base'
 
+function onTelegramSetting(account, history) {
+  if (account.telegram_id) {
+    return false
+  }
+
+  history.push('/settings/telegram/integration')
+}
+
 export default ({
-  onTelegramSetting,
+  history,
   account
 }) => (
   <ListItem
     button
     icon
-    onPress={onTelegramSetting}
+    onPress={() => onTelegramSetting(account, history)}
   >
     <Left>
       <Icon name="ios-send" />
@@ -24,7 +32,9 @@ export default ({
           name="checkmark"
           style={{ color: 'green' }}
         /> :
-        <TouchableOpacity onPress={onTelegramSetting}>
+        <TouchableOpacity
+          onPress={() => onTelegramSetting(account, history)}
+        >
           <Icon name="cog" />
         </TouchableOpacity>
       }

@@ -14,6 +14,7 @@ import SettingsView from '../views/settings'
 import CommunityView from '../views/community'
 import TelegramIntegrationView from '../views/telegram-integration'
 import EmailConfirmationView from '../views/email-confirm'
+import ChangePasswordView from '../views/password/change'
 import { setAppState, setSharedLink } from '../actions/app'
 
 class ApplicationContainer extends React.Component {
@@ -75,6 +76,7 @@ class ApplicationContainer extends React.Component {
           <Route exact path="/settings" component={SettingsView} />
           <Route exact path="/settings/telegram/integration" component={TelegramIntegrationView} />
           <Route exact path="/settings/email/confirm" component={EmailConfirmationView} />
+          <Route exact path="/settings/password/change" component={ChangePasswordView} />
         </View>
 
         <TabsNavigation

@@ -7,7 +7,13 @@ export default StyleSheet.create({
     justifyContent: 'center'
   },
   formContainer: {
-    flex: 7
+    flex: 3,
+    justifyContent: 'center'
+  },
+  iconContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   horizontalRow: {
     flexDirection: 'row',

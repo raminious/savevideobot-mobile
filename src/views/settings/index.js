@@ -11,21 +11,12 @@ import SubscriptionView from './subscription'
 import SavePathView from './save-path'
 import AppVersionView from './app-version'
 import TelegramView from './telegram'
+import PasswordView from './password'
 import styles from './styles'
 
 class SettingsView extends React.Component {
   constructor(props) {
     super(props)
-  }
-
-  onTelegramSetting() {
-    const { account, history } = this.props
-
-    if (account.telegram_id) {
-      return false
-    }
-
-    history.push('/settings/telegram/integration')
   }
 
   signoutRequest() {
@@ -50,7 +41,7 @@ class SettingsView extends React.Component {
   }
 
   render() {
-    const { account } = this.props
+    const { account, history } = this.props
 
     return (
       <View style={styles.container}>
@@ -78,6 +69,11 @@ class SettingsView extends React.Component {
               account={account}
             />
 
+            <PasswordView
+              account={account}
+              history={history}
+            />
+
             <SubscriptionView
               account={account}
             />
@@ -90,6 +86,7 @@ class SettingsView extends React.Component {
 
             <TelegramView
               account={account}
+              history={history}
               onTelegramSetting={() => this.onTelegramSetting()}
             />
 

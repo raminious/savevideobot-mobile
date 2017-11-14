@@ -105,6 +105,21 @@ User.resetPassword = async function(userId, pinCode, newPassword) {
 /**
  *
  */
+User.changePassword = async function(currentPassword, newPassword) {
+  try {
+    const response = await new Fetch()
+      .post('/user/password/change')
+      .send({ currentPassword, newPassword })
+
+    return response.body
+  } catch(e) {
+    throw e
+  }
+}
+
+/**
+ *
+ */
 User.sendConfirmationEmail = async function(userId) {
   try {
     const response = await new Fetch()
