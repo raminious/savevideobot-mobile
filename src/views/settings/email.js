@@ -1,9 +1,9 @@
 import React from 'react'
 import { Alert, TouchableOpacity } from 'react-native'
-import { Icon, ListItem, Body, Left, Right, Text } from 'native-base'
+import { Icon, Toast, ListItem, Body, Left, Right, Text } from 'native-base'
 import { withRouter } from 'react-router-native'
 import { connect } from 'react-redux'
-import { User } from '../../api/user'
+import User from '../../api/user'
 import styles from './styles'
 
 class EmailView extends React.Component {
@@ -30,32 +30,34 @@ class EmailView extends React.Component {
   }
 
   async sendConfirmationCode() {
-    const { history } = this.props
+    const { account, history } = this.props
     this.setState({ sendingEmail: true })
 
     try {
-      await User.sendConfirmationLink()
+      await User.sendConfirmationEmail(account.id)
 
       Toast.show({
-        text: 'Confirmation pin code has been sent. check your inbox.',
+        text: 'Verification code has been sent to your email. check your inbox.',
         position: 'bottom',
         duration: 4000
       })
 
-      return history.push('/settings/email-confirm')
+      return history.push('/settings/email/confirm')
     } catch(e) {
+
       Toast.show({
         text: e.response ? e.response.text : e.message,
         position: 'bottom',
         buttonText: 'Okay'
       })
 
-      this.setState({ sendingEmail: true })
+      this.setState({ sendingEmail: false })
     }
   }
 
   render() {
     const { account } = this.props
+    const { sendingEmail } = this.state
 
     return (
       <ListItem icon>
@@ -67,21 +69,30 @@ class EmailView extends React.Component {
             {account.email}
           </Text>
         </Body>
-        <Right>
-          {
-            account.email_confirmed ?
-            <Text note>Confirmed</Text> :
-            <TouchableOpacity
-              onPress={() => this.requestEmailConfirm()}>
-              <Text
-                note
-                style={{ color: 'red', fontWeight: 'bold' }}
-              >
-                Confirm
-              </Text>
-            </TouchableOpacity>
-          }
-        </Right>
+        {
+          sendingEmail ?
+          <Right>
+            <Text note>Sending email</Text>
+          </Right> :
+          <Right>
+            {
+              account.email_confirmed ?
+              <Icon
+                name="checkmark"
+                style={{ color: 'green' }}
+              /> :
+              <TouchableOpacity
+                onPress={() => this.requestEmailConfirm()}>
+                <Text
+                  note
+                  style={{ color: 'red', fontWeight: 'bold' }}
+                >
+                  Confirm
+                </Text>
+              </TouchableOpacity>
+            }
+          </Right>
+        }
       </ListItem>
     )
   }

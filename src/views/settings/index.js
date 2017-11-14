@@ -25,7 +25,7 @@ class SettingsView extends React.Component {
       return false
     }
 
-    history.push('/telegram/integration')
+    history.push('/settings/telegram/integration')
   }
 
   signoutRequest() {

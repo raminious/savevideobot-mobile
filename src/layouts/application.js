@@ -13,6 +13,7 @@ import FileDetailView from '../views/file-detail'
 import SettingsView from '../views/settings'
 import CommunityView from '../views/community'
 import TelegramIntegrationView from '../views/telegram-integration'
+import EmailConfirmationView from '../views/email-confirm'
 import { setAppState, setSharedLink } from '../actions/app'
 
 class ApplicationContainer extends React.Component {
@@ -70,9 +71,10 @@ class ApplicationContainer extends React.Component {
           <Route exact path="/progress" component={ProgressView} />
           <Route exact path="/files" component={FilesView} />
           <Route exact path="/files/:id" component={FileDetailView} />
-          <Route exact path="/settings" component={SettingsView} />
           <Route exact path="/live" component={CommunityView} />
-          <Route exact path="/telegram/integration" component={TelegramIntegrationView} />
+          <Route exact path="/settings" component={SettingsView} />
+          <Route exact path="/settings/telegram/integration" component={TelegramIntegrationView} />
+          <Route exact path="/settings/email/confirm" component={EmailConfirmationView} />
         </View>
 
         <TabsNavigation

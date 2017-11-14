@@ -6,7 +6,7 @@ const User = {}
 /**
  *
  */
-User.getIdentity = function () {
+User.getIdentity = function() {
   const user = db.find('User')
 
   if (user.length === 1) {
@@ -28,7 +28,7 @@ User.getIdentity = function () {
 /**
  *
  */
-User.signin = async function (email, password, terminateOtherSessions = false) {
+User.signin = async function(email, password, terminateOtherSessions = false) {
   try {
     const response = await new Fetch()
       .post('/user/access-token')
@@ -44,7 +44,7 @@ User.signin = async function (email, password, terminateOtherSessions = false) {
 /**
  *
  */
-User.signout = async function (token) {
+User.signout = async function(token) {
   try {
     const response = await new Fetch()
       .post('/user/remove-token')
@@ -60,7 +60,7 @@ User.signout = async function (token) {
 /**
  *
  */
-User.signup = async function (name, email, password) {
+User.signup = async function(name, email, password) {
   try {
     const response = await new Fetch()
       .post('/user/signup')
@@ -75,7 +75,7 @@ User.signup = async function (name, email, password) {
 /**
  *
  */
-User.forgetPassword = async function (email, sendTo) {
+User.forgetPassword = async function(email, sendTo) {
   try {
     const response = await new Fetch()
       .post('/user/password/forget')
@@ -90,7 +90,7 @@ User.forgetPassword = async function (email, sendTo) {
 /**
  *
  */
-User.resetPassword = async function (userId, pinCode, newPassword) {
+User.resetPassword = async function(userId, pinCode, newPassword) {
   try {
     const response = await new Fetch()
       .post('/user/password/reset')
@@ -105,7 +105,37 @@ User.resetPassword = async function (userId, pinCode, newPassword) {
 /**
  *
  */
-User.getInfo = async function (access_token = null) {
+User.sendConfirmationEmail = async function(userId) {
+  try {
+    const response = await new Fetch()
+      .post('/user/email/send-verification')
+      .send({ userId })
+
+    return response.body
+  } catch(e) {
+    throw e
+  }
+}
+
+/**
+ *
+ */
+User.verifyEmail = async function(userId, code) {
+  try {
+    const response = await new Fetch()
+      .post('/user/email/verify')
+      .send({ userId, code })
+
+    return response.body
+  } catch(e) {
+    throw e
+  }
+}
+
+/**
+ *
+ */
+User.getInfo = async function(access_token = null) {
   try {
     const response = await new Fetch()
       .get('/user/info')

@@ -20,7 +20,10 @@ export default ({
     <Right>
       {
         account.telegram_id ?
-        <Text note>Connected</Text> :
+        <Icon
+          name="checkmark"
+          style={{ color: 'green' }}
+        /> :
         <TouchableOpacity onPress={onTelegramSetting}>
           <Icon name="cog" />
         </TouchableOpacity>
