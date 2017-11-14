@@ -1,21 +1,8 @@
 import React from 'react'
 import { withRouter } from 'react-router-native'
 import { connect } from 'react-redux'
-import {
-  Grid,
-  Row,
-  Col,
-  View,
-  Button,
-  Content,
-  Card,
-  CardItem,
-  Body,
-  Left,
-  Right,
-  Thumbnail,
-  Icon,
-  Text
+import { Grid, Row, Col, View, Button, Content, Card, CardItem, Body,
+  Left, Right, Thumbnail, Icon, Text
 } from 'native-base'
 import { Image, Alert, ActivityIndicator } from 'react-native'
 import RNFetchBlob from 'react-native-fetch-blob'
@@ -33,11 +20,16 @@ class FileDetailView extends React.Component {
     super(props)
     this.state = {
       deleting: false,
+      fileExists: false,
       media: null
     }
   }
 
   componentDidMount() {
+    this.load()
+  }
+
+  async load() {
     const { history, match } = this.props
     const { id } = match.params
 
@@ -47,8 +39,11 @@ class FileDetailView extends React.Component {
       return history.push('/files')
     }
 
+    const fileExists = await this.getFileExists(media[0].filepath)
+
     this.setState({
-      media: media[0]
+      media: media[0],
+      fileExists
     })
   }
 
@@ -88,11 +83,26 @@ class FileDetailView extends React.Component {
   /**
    *
    */
-  openFile() {
-    const { media } = this.state
+  async openFile() {
+    const { media, fileExists } = this.state
+
+    if (!fileExists) {
+      return alert('Cannot open this file because it has been moved or removed')
+    }
 
     const mimetype = mime.lookup(media.filename) || 'application/octet-stream'
     RNFetchBlob.android.actionViewIntent(media.filepath, mimetype)
+  }
+
+  /**
+   *
+   */
+  getFileExists(filepath) {
+    return new Promise(resolve => {
+      RNFetchBlob.fs.exists(filepath)
+      .then((exist) => resolve(exist))
+      .catch(() => resolve(false))
+    })
   }
 
   /**
@@ -115,15 +125,6 @@ class FileDetailView extends React.Component {
   /**
    *
    */
-  sendToTelegram() {
-    const { history, account } = this.props
-    const { media } = this.state
-    SendToTelegram(history, account, media.url)
-  }
-
-  /**
-   *
-   */
   async deleteFile() {
     const { media } = this.state
 
@@ -133,7 +134,8 @@ class FileDetailView extends React.Component {
 
     // remove file
     RNFetchBlob.fs.unlink(media.filepath)
-    .then(r => r).catch(e => e)
+    .then(r => r)
+    .catch(e => e)
 
     // remove thumbnail
     if (media.thumbnail) {
@@ -148,8 +150,17 @@ class FileDetailView extends React.Component {
     this.goBack()
   }
 
+  /**
+   *
+   */
+  sendToTelegram() {
+    const { history, account } = this.props
+    const { media } = this.state
+    SendToTelegram(history, account, media.url)
+  }
+
   render() {
-    const { media, deleting } = this.state
+    const { media, fileExists, deleting } = this.state
 
     if (!media || deleting) {
       return <Loading
@@ -212,6 +223,7 @@ class FileDetailView extends React.Component {
               <CardItem footer>
                 <Grid>
                   <Row>
+
                     <Col style={{ paddingRight: 3 }}>
                       <Button
                         small
