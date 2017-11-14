@@ -1,12 +1,23 @@
 import { Sentry } from 'react-native-sentry'
 import * as types from '../constants/account'
 import db from '../database'
+import Analytics from '../services/analytics'
+
+function setUserContexts(identity) {
+  // set sentry user
+  if (!__DEV__) {
+    Sentry.setUserContext({
+      id: identity.id,
+      email: identity.email
+    })
+  }
+
+  // set google analytics user
+  Analytics.setUser(identity.email)
+}
 
 export function setUser(identity) {
-  Sentry.setUserContext({
-    id: identity.id,
-    email: identity.email
-  })
+  setUserContexts(identity)
 
   return {
     type: types.SET_USER,

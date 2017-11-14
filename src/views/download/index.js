@@ -10,6 +10,7 @@ import DownloaderService from '../../services/downloader'
 import db from '../../database'
 import Media from '../../api/media'
 import SendToTelegram from '../../services/telegram'
+import Analytics from '../../services/analytics'
 import Header from './header'
 import MediaInfo from './media-info'
 import Formats from './formats'
@@ -236,6 +237,9 @@ class DownloadView extends React.Component {
     const media = this.props.download
     const format = selectedFormat.toString()
     const id = media.id + format
+
+    // create analytics event
+    Analytics.setEvent('Media', 'Download')
 
     const find = this.searchMedia(media.url, format)
 

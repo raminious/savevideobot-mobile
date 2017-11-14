@@ -15,12 +15,12 @@ class LoginView extends React.Component {
     super(props)
 
     this.state = {
-      email: 'ramin.mousavy@gmail.com',
-      password: 'sep123$%^',
+      email: '',
+      password: '',
       working: false,
       validation: {
-        email: true,
-        password: true
+        email: false,
+        password: false
       }
     }
   }

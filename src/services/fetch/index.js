@@ -18,12 +18,6 @@ export default class Fetch {
   _create(method, endpoint) {
     const { account } = store.getState()
 
-    // const hasConnection = await this.checkInternetConnection()
-
-    // if (hasConnection === false) {
-    //   throw new Error('No Internet Connection')
-    // }
-
     const agent = SuperAgent[method](`${this._baseUrl}${endpoint}`)
       .set('Accept', 'application/json')
       .set('access-token', this.access_token || account.access_token)

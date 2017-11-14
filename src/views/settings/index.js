@@ -1,7 +1,7 @@
 import React from 'react'
 import { withRouter } from 'react-router-native'
 import { connect } from 'react-redux'
-import { Share, Platform, StyleSheet, Alert, Linking } from 'react-native'
+import { Share, Platform, StyleSheet, Alert } from 'react-native'
 import { View, Text, Content, Icon, List, ListItem, Left, Right, Body, Switch } from 'native-base'
 import { logout } from '../../actions/account'
 import User from '../../api/user'

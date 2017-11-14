@@ -5,6 +5,7 @@ import { Image, Keyboard } from 'react-native'
 import { View, Toast, Item, Text, Content, InputGroup, Input, Label, Icon, Button } from 'native-base'
 import * as Animatable from 'react-native-animatable'
 import Loading from '../../components/loading'
+import Analytics from '../../services/analytics'
 import { setMedia } from '../../actions/download'
 import { setSharedLink } from '../../actions/app'
 import Media from '../../api/media'
@@ -17,7 +18,7 @@ class ExploreView extends React.Component {
     super(props)
     this.state = {
       searching: false,
-      url: 'https://www.youtube.com/watch?v=KiWeNrjZ124',
+      url: '',
       isValidated: true
     }
   }
@@ -76,6 +77,9 @@ class ExploreView extends React.Component {
     Keyboard.dismiss()
 
     try {
+      // set event
+      Analytics.setEvent('Media', 'Explore')
+
       const media = await Media.request(url)
       const downloadInformation = await Media.dump(media.id)
 
@@ -95,6 +99,9 @@ class ExploreView extends React.Component {
         }
 
         errorText = e.response.text
+
+        // set error event
+        Analytics.setEvent('Error', 'Explore')
       }
 
       Toast.show({
