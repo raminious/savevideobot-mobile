@@ -59,16 +59,8 @@ class ExploreView extends React.Component {
   * send request for explore url to server
   */
   async explore() {
-    const { url, isValidated } = this.state
+    const { url } = this.state
     const { history, setMedia } = this.props
-
-    if (!isValidated){
-      return Toast.show({
-        text: 'Enter a valid download link',
-        position: 'bottom',
-        duration: 3000
-      })
-    }
 
     this.setState({
       searching: true
