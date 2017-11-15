@@ -18,7 +18,7 @@ Telegram.sendCommand = async function(telegram_id, text) {
             id: telegram_id
           },
           chat: {
-            id: '-125053026',//telegram_id,
+            id: telegram_id,
             type: 'private'
           },
           date: moment().format('x'),
