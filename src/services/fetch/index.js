@@ -47,17 +47,17 @@ export default class Fetch {
       return false
     }
 
-    const { status, body } = e.response
+    const { status, text } = e.response
     if (status === 401) {
       this.onInvalidAccessToken()
     }
 
     if (status === 402) {
-      this.onPaymentRequired(body)
+      this.onPaymentRequired(text)
     }
 
     if (status === 429) {
-      this.onRateLimit(body)
+      this.onRateLimit(text)
     }
   }
 
@@ -71,23 +71,22 @@ export default class Fetch {
     store.dispatch(logout())
   }
 
-  onRateLimit(response) {
+  onRateLimit(text) {
     Toast.show({
-      text: `You sent too many request, wait for ${response.text}`,
+      text: text,
       position: 'bottom',
       buttonText: 'Okay'
     })
   }
 
-  onPaymentRequired(response) {
+  onPaymentRequired(text) {
     const { account } = store.getState()
 
     Alert.alert(
-      'Buy subscription',
-      `You should buy subscription to download this file or wait for ${response.text}`,
+      'Buy subscription', text,
       [
-        { text: 'Wait', onPress: () => null, style: 'cancel' },
-        { text: 'Buy subscription',  onPress: () => buySubscription(account.id) }
+        { text: 'Cancel', onPress: () => null, style: 'cancel' },
+        { text: 'Buy subscription', onPress: () => buySubscription(account.id) }
       ],
       { cancelable: false }
     )
