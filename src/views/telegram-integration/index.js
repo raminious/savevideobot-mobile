@@ -25,7 +25,7 @@ class TelegramIntegrationView extends React.Component {
     const { account } = this.props
 
     Share.share({
-      message: `link_${account.id}`,
+      message: `/link_${account.id}`,
       url: 'tg://resolve?domain=savevideobot',
       title: 'Telegram Integrating'
     }, {
@@ -174,7 +174,7 @@ class TelegramIntegrationView extends React.Component {
                 regular
                 style={styles.inputManual}
               >
-                <Input value={`link_${account.id}`} />
+                <Input value={`/link_${account.id}`} />
               </Item>
 
               <Button
