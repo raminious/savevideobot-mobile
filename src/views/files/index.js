@@ -69,11 +69,12 @@ class FilesView extends React.Component {
    */
   createListView() {
     const { datasource, criteria } = this.state
+    const { account } = this.props
 
     let media = db.find('Media')
 
     if (media.length > 0) {
-      let query = 'status = "complete"'
+      let query = `status = "complete" && user_id = "${account.id}" `
 
       if (criteria.title.trim().length > 0) {
         query += ` && title BEGINSWITH[c] "${criteria.title}"`
@@ -256,8 +257,8 @@ class FilesView extends React.Component {
   }
 }
 
-function mapStateToProps({ app }) {
-  return { app }
+function mapStateToProps({ account }) {
+  return { account }
 }
 
 export default withRouter(connect(mapStateToProps)(FilesView))

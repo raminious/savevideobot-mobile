@@ -138,9 +138,10 @@ class DownloadView extends React.Component {
    */
   async createNewDownload(id, media) {
     const { selectedFormat, thumbnail } = this.state
-    const { history } = this.props
+    const { history, account } = this.props
     let { site, url, download, extension, stream, size, type } = media
     const format = selectedFormat.toString()
+    const user_id = account.id
 
     const title = media
       .title
@@ -189,6 +190,7 @@ class DownloadView extends React.Component {
     // save media info in database
     db.save('Media', {
       id,
+      user_id,
       site,
       url,
       title,
