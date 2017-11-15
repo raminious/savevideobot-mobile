@@ -75,7 +75,7 @@ class ResetPasswordView extends React.Component {
       await User.resetPassword(userId, pinCode, password)
       Toast.show({
         text: 'Your password has been changed. Login with your new password.',
-        position: 'bottom',
+        position: 'top',
         duration: 2400
       })
 
@@ -85,7 +85,7 @@ class ResetPasswordView extends React.Component {
     } catch(e) {
       Toast.show({
         text: e.response ? e.response.text : e.message,
-        position: 'bottom',
+        position: 'top',
         duration: 4000
       })
 

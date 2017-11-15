@@ -36,7 +36,7 @@ class TelegramIntegrationView extends React.Component {
       waitingForIntegration: true
     })
 
-    setTimeout(() => this.checkIntegration(), 5000)
+    setTimeout(() => this.checkIntegration(), 3000)
   }
 
   toggleHelpMore() {
@@ -50,7 +50,7 @@ class TelegramIntegrationView extends React.Component {
       return false
     }
 
-    if (persist && this.checkedCount >= 4) {
+    if (persist && this.checkedCount >= 5) {
       return this.onFailedIntegration()
     }
 
@@ -79,8 +79,18 @@ class TelegramIntegrationView extends React.Component {
     }
   }
 
+  cancelChecking() {
+    this.checkedCount = 1000
+
+    this.setState({
+      waitingForIntegration: false,
+      isChecking: false
+    })
+  }
+
   onConnected(user) {
-    const { history, setUserAttributes } = this.props
+    const { history, app, setUserAttributes } = this.props
+    const message = 'Your account has been connected to Telegram successfully'
 
     // update table
     updateUserTable(user)
@@ -89,9 +99,14 @@ class TelegramIntegrationView extends React.Component {
     setUserAttributes({ telegram_id: user.telegram_id })
 
     Toast.show({
-      text: 'Your Telegram account has been integrated',
-      position: 'bottom',
+      text: message,
+      position: 'top',
       duration: 3000
+    })
+
+    sendLocalNotification({
+      title: 'SaveVideoBot Connected to Telegram',
+      message
     })
 
     history.goBack()
@@ -106,7 +121,7 @@ class TelegramIntegrationView extends React.Component {
 
     Toast.show({
       text: 'Your account not integrated yet. try again.',
-      position: 'bottom',
+      position: 'top',
       duration: 5000
     })
   }
@@ -118,7 +133,9 @@ class TelegramIntegrationView extends React.Component {
     return (
       <View style={styles.container}>
         <Header
+          isWaitingForIntegration={waitingForIntegration}
           isChecking={isChecking}
+          onCancelChecking={() => this.cancelChecking()}
         />
 
         <Content>

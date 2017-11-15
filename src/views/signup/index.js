@@ -83,7 +83,7 @@ class SignupView extends React.Component {
     if (validation.name === false) {
       return Toast.show({
         text: 'Enter your name',
-        position: 'bottom',
+        position: 'top',
         duration: 3000
       })
     }
@@ -91,7 +91,7 @@ class SignupView extends React.Component {
     if (validation.email === false) {
       return Toast.show({
         text: 'Enter a valid email address',
-        position: 'bottom',
+        position: 'top',
         duration: 3000
       })
     }
@@ -99,7 +99,7 @@ class SignupView extends React.Component {
     if (validation.password === false) {
       return Toast.show({
         text: 'Password must be at least 6 characters',
-        position: 'bottom',
+        position: 'top',
         duration: 3000
       })
     }
@@ -119,7 +119,7 @@ class SignupView extends React.Component {
       if (e) {
         return Toast.show({
           text: e.response ? e.response.text : e.message,
-          position: 'bottom',
+          position: 'top',
           duration: 3000
         })
       }

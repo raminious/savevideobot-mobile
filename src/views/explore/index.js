@@ -98,7 +98,7 @@ class ExploreView extends React.Component {
 
       Toast.show({
         text: errorText,
-        position: 'bottom',
+        position: 'top',
         duration: 2500
       })
 

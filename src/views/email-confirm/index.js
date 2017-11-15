@@ -38,7 +38,7 @@ class EmailConfirmView extends React.Component {
       Toast.show({
         text: 'Your email verified. ' +
           `Also your subscription increased for ${increaseDays} more days`,
-        position: 'bottom',
+        position: 'top',
         duration: 6000
       })
 
@@ -61,7 +61,7 @@ class EmailConfirmView extends React.Component {
     } catch(e) {
       Toast.show({
         text: e.response ? e.response.text : e.message,
-        position: 'bottom',
+        position: 'top',
         duration: 4000
       })
 

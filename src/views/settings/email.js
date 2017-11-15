@@ -38,7 +38,7 @@ class EmailView extends React.Component {
 
       Toast.show({
         text: 'Verification code has been sent to your email. check your inbox.',
-        position: 'bottom',
+        position: 'top',
         duration: 4000
       })
 
@@ -47,7 +47,7 @@ class EmailView extends React.Component {
 
       Toast.show({
         text: e.response ? e.response.text : e.message,
-        position: 'bottom',
+        position: 'top',
         duration: 4000
       })
 

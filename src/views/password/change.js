@@ -73,7 +73,7 @@ class ChangePasswordView extends React.Component {
       await User.changePassword(currentPassword, newPassword)
       Toast.show({
         text: 'Your password has been changed.',
-        position: 'bottom',
+        position: 'top',
         duration: 3500
       })
 
@@ -83,7 +83,7 @@ class ChangePasswordView extends React.Component {
     } catch(e) {
       Toast.show({
         text: e.response ? e.response.text : e.message,
-        position: 'bottom',
+        position: 'top',
         duration: 4000
       })
 

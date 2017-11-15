@@ -57,7 +57,7 @@ class SettingsView extends React.Component {
 
       Toast.show({
         text: `Reset password pin has been sent to your ${sendCodeTo}`,
-        position: 'bottom',
+        position: 'top',
         duration: 2000
       })
 
@@ -67,7 +67,7 @@ class SettingsView extends React.Component {
     } catch(e) {
       Toast.show({
         text: e.response ? e.response.text : e.message,
-        position: 'bottom',
+        position: 'top',
         duration: 4000
       })
 

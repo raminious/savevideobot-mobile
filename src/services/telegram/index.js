@@ -19,7 +19,7 @@ export default function(routerHistory, user, message) {
 
   Toast.show({
     text: 'The request has been sent',
-    position: 'bottom',
+    position: 'top',
     duration: 3000
   })
 }

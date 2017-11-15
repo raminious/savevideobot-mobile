@@ -64,7 +64,7 @@ export default class Fetch {
   onInvalidAccessToken() {
     Toast.show({
       text: 'Your login has been expired.',
-      position: 'bottom',
+      position: 'top',
       duration: 2500
     })
 
@@ -74,7 +74,7 @@ export default class Fetch {
   onRateLimit(text) {
     Toast.show({
       text: text,
-      position: 'bottom',
+      position: 'top',
       duration: 6000
     })
   }

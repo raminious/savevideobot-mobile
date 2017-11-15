@@ -3,7 +3,9 @@ import { TouchableOpacity, ActivityIndicator } from 'react-native'
 import { Header, Title, Body, Right, Text } from 'native-base'
 
 export default ({
-  isChecking
+  isChecking,
+  isWaitingForIntegration,
+  onCancelChecking
 }) => (
   <Header>
     <Body>
@@ -17,6 +19,13 @@ export default ({
         hidesWhenStopped
         size="small"
       />
+
+      {
+        isWaitingForIntegration && !isChecking &&
+        <TouchableOpacity onPress={onCancelChecking}>
+          <Text style={{ color: '#fff' }}>Cancel</Text>
+        </TouchableOpacity>
+      }
     </Right>
   </Header>
 )

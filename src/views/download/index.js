@@ -171,7 +171,7 @@ class DownloadView extends React.Component {
 
       return Toast.show({
         text: 'Both direct and mirror links are not working at this time',
-        position: 'bottom',
+        position: 'top',
         duration: 6000
       })
     }
