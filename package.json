@@ -54,6 +54,9 @@
 		"jest": "21.2.1",
 		"react-test-renderer": "16.0.0"
 	},
+	"resolutions": {
+		"uglify-js": "github:alexlamsl/UglifyJS2#issue-2449"
+	},
 	"jest": {
 		"preset": "react-native"
 	}

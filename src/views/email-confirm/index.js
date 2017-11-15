@@ -39,7 +39,7 @@ class EmailConfirmView extends React.Component {
         text: 'Your email verified. ' +
           `Also your subscription increased for ${increaseDays} more days`,
         position: 'bottom',
-        buttonText: 'Okay'
+        duration: 6000
       })
 
       // update table

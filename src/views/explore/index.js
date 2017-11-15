@@ -66,7 +66,7 @@ class ExploreView extends React.Component {
       return Toast.show({
         text: 'Enter a valid download link',
         position: 'bottom',
-        buttonText: 'Okay'
+        duration: 3000
       })
     }
 

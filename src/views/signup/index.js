@@ -84,7 +84,7 @@ class SignupView extends React.Component {
       return Toast.show({
         text: 'Enter your name',
         position: 'bottom',
-        buttonText: 'Okay'
+        duration: 3000
       })
     }
 
@@ -92,7 +92,7 @@ class SignupView extends React.Component {
       return Toast.show({
         text: 'Enter a valid email address',
         position: 'bottom',
-        buttonText: 'Okay'
+        duration: 3000
       })
     }
 
@@ -100,7 +100,7 @@ class SignupView extends React.Component {
       return Toast.show({
         text: 'Password must be at least 6 characters',
         position: 'bottom',
-        buttonText: 'Okay'
+        duration: 3000
       })
     }
 
@@ -120,7 +120,7 @@ class SignupView extends React.Component {
         return Toast.show({
           text: e.response ? e.response.text : e.message,
           position: 'bottom',
-          buttonText: 'Okay'
+          duration: 3000
         })
       }
     }
@@ -135,7 +135,7 @@ class SignupView extends React.Component {
     Toast.show({
       text: 'Welcome to Save Video Bot',
       position: 'top',
-      buttonText: 'Okay'
+      duration: 5000
     })
 
     history.push('/')

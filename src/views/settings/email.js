@@ -48,7 +48,7 @@ class EmailView extends React.Component {
       Toast.show({
         text: e.response ? e.response.text : e.message,
         position: 'bottom',
-        buttonText: 'Okay'
+        duration: 4000
       })
 
       this.setState({ sendingEmail: false })

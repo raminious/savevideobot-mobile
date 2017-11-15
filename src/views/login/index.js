@@ -77,7 +77,7 @@ class LoginView extends React.Component {
       return Toast.show({
         text: 'Enter a valid email address',
         position: 'bottom',
-        buttonText: 'Okay'
+        duration: 3000
       })
     }
 
@@ -85,7 +85,7 @@ class LoginView extends React.Component {
       return Toast.show({
         text: 'Password is not correct',
         position: 'bottom',
-        buttonText: 'Okay'
+        duration: 3000
       })
     }
 
@@ -107,7 +107,7 @@ class LoginView extends React.Component {
       return Toast.show({
         text: e.response ? e.response.text : e.message,
         position: 'bottom',
-        buttonText: 'Okay'
+        duration: 4000
       })
     }
 

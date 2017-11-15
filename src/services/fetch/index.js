@@ -75,7 +75,7 @@ export default class Fetch {
     Toast.show({
       text: text,
       position: 'bottom',
-      buttonText: 'Okay'
+      duration: 6000
     })
   }
 

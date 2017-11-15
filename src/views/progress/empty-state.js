@@ -1,7 +1,8 @@
 import React from 'react'
 import { Header, View, Text, Body, Title, Icon } from 'native-base'
 import styles from './styles'
-export default ({}) => (
+
+export default () => (
   <View style={styles.container}>
     <Header>
       <Body>

@@ -74,7 +74,7 @@ class ChangePasswordView extends React.Component {
       Toast.show({
         text: 'Your password has been changed.',
         position: 'bottom',
-        duration: 2400
+        duration: 3500
       })
 
       // navigate to reset page
@@ -84,7 +84,7 @@ class ChangePasswordView extends React.Component {
       Toast.show({
         text: e.response ? e.response.text : e.message,
         position: 'bottom',
-        buttonText: 'Okay'
+        duration: 4000
       })
 
       this.setState({ saving: false })

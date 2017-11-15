@@ -2,9 +2,7 @@ import React from 'react'
 import { Icon, ListItem, Body, Left, Right, Text } from 'native-base'
 import App from '../../../package.json'
 
-export default ({
-
-}) => (
+export default () => (
   <ListItem icon>
     <Left>
       <Icon name="information-circle" />
