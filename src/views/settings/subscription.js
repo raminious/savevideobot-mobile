@@ -20,7 +20,7 @@ function getRemainedDays(subscription) {
 
 function askForBuySubscription(userId) {
   Alert.alert(
-    'Subscription expired',
+    'Subscription',
     'Do you want to renew or get more subscription days?',
     [
       {text: 'Cancel', onPress: () => null, style: 'cancel'},
