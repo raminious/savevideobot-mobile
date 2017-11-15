@@ -88,6 +88,12 @@ class ProgressView extends React.Component {
     return (bytes / Math.pow(1024, i)).toFixed(2) + ' ' + sizes[i]
   }
 
+  onClickListItem(item, id) {
+    if (item.done) {
+      this.onOpenMedia(id)
+    }
+  }
+
   render() {
     const { progress } = this.props
 
@@ -114,7 +120,10 @@ class ProgressView extends React.Component {
 
               return (
                 <View key={id}>
-                  <ListItem itemDivider icon>
+                  <ListItem
+                    itemDivider
+                    icon
+                  >
                     <Body>
                       <Text>{this.getTitle(item.filename)}</Text>
                     </Body>
@@ -130,6 +139,8 @@ class ProgressView extends React.Component {
                   <ListItem
                     style={styles.widerList}
                     icon
+                    button
+                    onPress={() => this.onClickListItem(item, id)}
                   >
                     <Body style={styles.widerList}>
                       <View>
