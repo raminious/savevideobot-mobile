@@ -62,6 +62,14 @@ class ExploreView extends React.Component {
     const { url } = this.state
     const { history, setMedia } = this.props
 
+    if (!url) {
+      return Toast.show({
+        text: 'Enter a valid link',
+        position: 'top',
+        duration: 2500
+      })
+    }
+
     this.setState({
       searching: true
     })
