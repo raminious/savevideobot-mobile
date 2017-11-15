@@ -1,7 +1,9 @@
 import { Sentry } from 'react-native-sentry'
+import { Linking } from 'react-native'
 import * as types from '../constants/account'
 import db from '../database'
 import Analytics from '../services/analytics'
+import config from '../config'
 
 function setUserContexts(identity) {
   // set sentry user
@@ -23,6 +25,10 @@ export function setUser(identity) {
     type: types.SET_USER,
     identity
   }
+}
+
+export function buySubscription(userId) {
+  Linking.openURL(`${config.app.domain}/subscription/buy/${userId}`)
 }
 
 export function updateUserTable(user) {

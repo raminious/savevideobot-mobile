@@ -1,10 +1,10 @@
 import SuperAgent from 'superagent'
-import { NetInfo, Platform } from 'react-native'
+import { Alert, NetInfo, Platform } from 'react-native'
 import { Toast } from 'native-base'
 import store from '../../store'
 import config from '../../config'
 import App from '../../../package.json'
-import { logout } from '../../actions/account'
+import { buySubscription, logout } from '../../actions/account'
 
 export default class Fetch {
   constructor(options = {}) {
@@ -43,8 +43,21 @@ export default class Fetch {
   }
 
   onError(e) {
-    if (e.response && e.response.status === 401) {
+    if (!e.response) {
+      return false
+    }
+
+    const { status, body } = e.response
+    if (status === 401) {
       this.onInvalidAccessToken()
+    }
+
+    if (status === 402) {
+      this.onPaymentRequired(body)
+    }
+
+    if (status === 429) {
+      this.onRateLimit(body)
     }
   }
 
@@ -56,5 +69,27 @@ export default class Fetch {
     })
 
     store.dispatch(logout())
+  }
+
+  onRateLimit(response) {
+    Toast.show({
+      text: `You sent too many request, wait for ${response.text}`,
+      position: 'bottom',
+      buttonText: 'Okay'
+    })
+  }
+
+  onPaymentRequired(response) {
+    const { account } = store.getState()
+
+    Alert.alert(
+      'Buy subscription',
+      `You should buy subscription to download this file or wait for ${response.text}`,
+      [
+        { text: 'Wait', onPress: () => null, style: 'cancel' },
+        { text: 'Buy subscription',  onPress: () => buySubscription(account.id) }
+      ],
+      { cancelable: false }
+    )
   }
 }

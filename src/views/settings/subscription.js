@@ -1,27 +1,33 @@
 import React from 'react'
 import { Icon, ListItem, Body, Left, Right, Text } from 'native-base'
-import { Alert, Linking } from 'react-native'
+import { Alert } from 'react-native'
+import { buySubscription } from '../../actions/account'
 import moment from 'moment'
-import config from '../../config'
 
 function getRemainedDays(subscription) {
-  return moment(subscription).fromNow(true)
+  const date = moment(subscription)
+
+  if (moment().isAfter(date)) {
+    return <Text note style={{ color: 'red' }}>Expired</Text>
+  }
+
+  return (
+    <Text note>
+      { date.fromNow(true) }
+    </Text>
+  )
 }
 
 function askForBuySubscription(userId) {
   Alert.alert(
     'Buy subscription',
-    'Do you want to get more subscription?',
+    'Do you want to renew or get more subscription days?',
     [
       {text: 'Cancel', onPress: () => null, style: 'cancel'},
       {text: 'Yes', onPress: () => buySubscription(userId)}
     ],
     { cancelable: false }
   )
-}
-
-function buySubscription(userId) {
-  Linking.openURL(`${config.app.domain}/subscription/buy/${userId}`)
 }
 
 export default ({
@@ -39,9 +45,7 @@ export default ({
       <Text note>Remained days</Text>
     </Body>
     <Right>
-      <Text note>
-        {getRemainedDays(account.subscription)}
-      </Text>
+      { getRemainedDays(account.subscription) }
     </Right>
   </ListItem>
 )

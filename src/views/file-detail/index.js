@@ -20,6 +20,7 @@ class FileDetailView extends React.Component {
     super(props)
     this.state = {
       deleting: false,
+      showCard: true,
       fileExists: false,
       media: null
     }
@@ -48,9 +49,11 @@ class FileDetailView extends React.Component {
   }
 
   findMedia(id) {
+    const { account } = this.props
+
     return db
       .find('Media')
-      .filtered(`id = '${id}'`)
+      .filtered(`id = '${id}' && user_id = '${account.id}'`)
   }
 
   getTitle(title = '', max = 20) {
@@ -159,8 +162,14 @@ class FileDetailView extends React.Component {
     SendToTelegram(history, account, media.url)
   }
 
+  onToggleShowCard() {
+    this.setState({
+      showCard: !this.state.showCard
+    })
+  }
+
   render() {
-    const { media, fileExists, deleting } = this.state
+    const { media, showCard, fileExists, deleting } = this.state
 
     if (!media || deleting) {
       return <Loading
@@ -173,6 +182,7 @@ class FileDetailView extends React.Component {
         <Header
           title={this.capitalize(media.type)}
           onGoBack={() => this.goBack()}
+          onToggleShowCard={() => this.onToggleShowCard()}
         />
 
         <View style={styles.container}>
@@ -181,98 +191,101 @@ class FileDetailView extends React.Component {
             source={ThumbnailService.loadImage(media)}
           />
 
-          <Content>
-            <Card style={styles.card}>
-              <CardItem header>
-                <Left>
-                  <Thumbnail
-                    source={ThumbnailService.loadImage(media)}
-                  />
+          {
+            showCard &&
+            <Content>
+              <Card style={styles.card}>
+                <CardItem header>
+                  <Left>
+                    <Thumbnail
+                      source={ThumbnailService.loadImage(media)}
+                    />
 
-                  <Body>
-                    <Text>{this.getTitle(media.title)}</Text>
-                    <Text note>{this.capitalize(media.type)}</Text>
-                  </Body>
-                </Left>
-              </CardItem>
+                    <Body>
+                      <Text>{this.getTitle(media.title)}</Text>
+                      <Text note>{this.capitalize(media.type)}</Text>
+                    </Body>
+                  </Left>
+                </CardItem>
 
-              <CardItem>
-                <View style={styles.container}>
-                  <View style={styles.row}>
-                    <Text style={styles.rowTitle}>Filename</Text>
-                    <Text style={styles.rowDesc}>{media.filename}</Text>
+                <CardItem>
+                  <View style={styles.container}>
+                    <View style={styles.row}>
+                      <Text style={styles.rowTitle}>Filename</Text>
+                      <Text style={styles.rowDesc}>{media.filename}</Text>
+                    </View>
+
+                    <View style={styles.row}>
+                      <Text style={styles.rowTitle}>Size</Text>
+                      <Text style={styles.rowDesc}>{this.bytes(media.size)}</Text>
+                    </View>
+
+                    <View style={styles.row}>
+                      <Text style={styles.rowTitle}>Date created</Text>
+                      <Text style={styles.rowDesc}>{moment(media.date_created).format('Y/M/D HH:mm')}</Text>
+                    </View>
+
+                    <View style={styles.row}>
+                      <Text style={styles.rowTitle}>Saved Path</Text>
+                      <Text style={styles.rowDesc}>{media.filepath}</Text>
+                    </View>
                   </View>
+                </CardItem>
 
-                  <View style={styles.row}>
-                    <Text style={styles.rowTitle}>Size</Text>
-                    <Text style={styles.rowDesc}>{this.bytes(media.size)}</Text>
-                  </View>
+                <CardItem footer>
+                  <Grid>
+                    <Row>
 
-                  <View style={styles.row}>
-                    <Text style={styles.rowTitle}>Date created</Text>
-                    <Text style={styles.rowDesc}>{moment(media.date_created).format('Y/M/D HH:mm')}</Text>
-                  </View>
+                      <Col style={{ paddingRight: 3 }}>
+                        <Button
+                          small
+                          iconLeft
+                          bordered
+                          info
+                          full
+                          onPress={() => this.openFile()}
+                        >
+                          <Icon name="open" />
+                          <Text>Open {media.type}</Text>
+                        </Button>
+                      </Col>
 
-                  <View style={styles.row}>
-                    <Text style={styles.rowTitle}>Saved Path</Text>
-                    <Text style={styles.rowDesc}>{media.filepath}</Text>
-                  </View>
-                </View>
-              </CardItem>
+                      <Col style={{ paddingLeft: 3 }}>
+                        <Button
+                          small
+                          iconLeft
+                          bordered
+                          danger
+                          full
+                          onPress={() => this.requestDeleteFile()}
+                        >
+                          <Icon name="trash" />
+                          <Text>Delete {media.type}</Text>
+                        </Button>
+                      </Col>
+                    </Row>
 
-              <CardItem footer>
-                <Grid>
-                  <Row>
-
-                    <Col style={{ paddingRight: 3 }}>
-                      <Button
-                        small
-                        iconLeft
-                        bordered
-                        info
-                        full
-                        onPress={() => this.openFile()}
-                      >
-                        <Icon name="open" />
-                        <Text>Open {media.type}</Text>
-                      </Button>
-                    </Col>
-
-                    <Col style={{ paddingLeft: 3 }}>
-                      <Button
-                        small
-                        iconLeft
-                        bordered
-                        danger
-                        full
-                        onPress={() => this.requestDeleteFile()}
-                      >
-                        <Icon name="trash" />
-                        <Text>Delete {media.type}</Text>
-                      </Button>
-                    </Col>
-                  </Row>
-
-                  <Row style={{ marginTop: 6 }}>
-                    <Col>
-                      <Button
-                        small
-                        full
-                        iconLeft
-                        bordered
-                        dark
-                        style={styles.btnCta}
-                        onPress={() => this.sendToTelegram()}
-                      >
-                        <Icon name="send" />
-                        <Text>Send file to my Telegram</Text>
-                      </Button>
-                    </Col>
-                  </Row>
-                </Grid>
-              </CardItem>
-           </Card>
-          </Content>
+                    <Row style={{ marginTop: 6 }}>
+                      <Col>
+                        <Button
+                          small
+                          full
+                          iconLeft
+                          bordered
+                          dark
+                          style={styles.btnCta}
+                          onPress={() => this.sendToTelegram()}
+                        >
+                          <Icon name="send" />
+                          <Text>Send file to my Telegram</Text>
+                        </Button>
+                      </Col>
+                    </Row>
+                  </Grid>
+                </CardItem>
+             </Card>
+            </Content>
+          }
         </View>
       </View>
     )
