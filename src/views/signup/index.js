@@ -29,9 +29,7 @@ class SignupView extends React.Component {
   onNameChange(name) {
     const { validation } = this.state
 
-    name = name.trim() // eslint-disable-line no-param-reassign
-
-    validation.name = name.length >= 3
+    validation.name = name.trim().length >= 3
 
     this.setState({
       name,
@@ -114,7 +112,7 @@ class SignupView extends React.Component {
     })
 
     try {
-      user = await User.signup(name, email, password)
+      user = await User.signup(name.trim(), email, password)
     } catch (e) {
       this.setState({ saving: false })
 

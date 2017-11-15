@@ -74,6 +74,12 @@ class SettingsView extends React.Component {
               history={history}
             />
 
+            <ListItem itemDivider icon>
+              <Body>
+                <Text>Subscription</Text>
+              </Body>
+            </ListItem>
+
             <SubscriptionView
               account={account}
             />

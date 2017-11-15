@@ -3,6 +3,7 @@ const MediaSchema = {
   primaryKey: 'id',
   properties: {
     id: 'string',
+    user_id: 'string',
     favorite: { type: 'bool', default: false, indexed: true },
     site: { type: 'string', default: '' },
     url: 'string',
@@ -18,7 +19,6 @@ const MediaSchema = {
     format: { type: 'string', default: 'best' },
     resumable: { type: 'bool', optional: true },
     filepath: { type: 'string', default: '' },
-    directory: { type: 'string', default: 'home' },
     date_created: { type: 'date', default: new Date() },
     date_modified: { type: 'date', default: new Date() },
   }

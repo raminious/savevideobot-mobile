@@ -18,7 +18,8 @@ User.getIdentity = function() {
       access_token: identity.access_token,
       name: identity.name,
       username: identity.username,
-      telegram_id: identity.telegram_id
+      telegram_id: identity.telegram_id,
+      subscription: identity.subscription
     }
   }
 
@@ -120,11 +121,10 @@ User.changePassword = async function(currentPassword, newPassword) {
 /**
  *
  */
-User.sendConfirmationEmail = async function(userId) {
+User.sendConfirmationEmail = async function() {
   try {
     const response = await new Fetch()
       .post('/user/email/send-verification')
-      .send({ userId })
 
     return response.body
   } catch(e) {
@@ -135,11 +135,11 @@ User.sendConfirmationEmail = async function(userId) {
 /**
  *
  */
-User.verifyEmail = async function(userId, code) {
+User.verifyEmail = async function(code) {
   try {
     const response = await new Fetch()
       .post('/user/email/verify')
-      .send({ userId, code })
+      .send({ code })
 
     return response.body
   } catch(e) {

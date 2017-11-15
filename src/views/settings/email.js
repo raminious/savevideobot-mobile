@@ -21,7 +21,7 @@ class EmailView extends React.Component {
   requestEmailConfirm() {
     Alert.alert(
       'Confirm Email',
-      'Confirm your email and receive 10 more days free subscription',
+      'Confirm your email and receive 7 more days free subscription',
       [
         { text: 'Later', style: 'cancel' },
         { text: 'Yes, Send email', onPress: () => this.sendConfirmationCode() }
@@ -30,11 +30,11 @@ class EmailView extends React.Component {
   }
 
   async sendConfirmationCode() {
-    const { account, history } = this.props
+    const { history } = this.props
     this.setState({ sendingEmail: true })
 
     try {
-      await User.sendConfirmationEmail(account.id)
+      await User.sendConfirmationEmail()
 
       Toast.show({
         text: 'Verification code has been sent to your email. check your inbox.',
@@ -87,7 +87,7 @@ class EmailView extends React.Component {
                   note
                   style={{ color: 'red', fontWeight: 'bold' }}
                 >
-                  Confirm
+                  Verify email
                 </Text>
               </TouchableOpacity>
             }

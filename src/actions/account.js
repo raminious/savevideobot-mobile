@@ -32,7 +32,8 @@ export function updateUserTable(user) {
     email: user.email,
     email_confirmed: user.email_confirmed,
     telegram_id: user.telegram_id,
-    access_token: user.access_token
+    access_token: user.access_token,
+    subscription: user.subscription
   }, true)
 }
 

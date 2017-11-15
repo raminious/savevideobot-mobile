@@ -33,22 +33,27 @@ class EmailConfirmView extends React.Component {
     this.setState({ saving: true })
 
     try {
-      await User.verifyEmail(account.id, verifyCode)
+      const { subscription, increaseDays } = await User.verifyEmail(verifyCode)
 
       Toast.show({
-        text: 'Your email has been verified',
+        text: 'Your email verified. ' +
+          `Also your subscription increased for ${increaseDays} more days`,
         position: 'bottom',
-        duration: 2400
+        buttonText: 'Okay'
       })
 
       // update table
       updateUserTable({
         ...account,
-        email_confirmed: true
+        subscription,
+        email_confirmed: true,
       })
 
       // set user attr
-      setUserAttributes({ email_confirmed: true })
+      setUserAttributes({
+        email_confirmed: true,
+        subscription
+      })
 
       // navigate to setting page
       history.push('/settings')
@@ -57,7 +62,7 @@ class EmailConfirmView extends React.Component {
       Toast.show({
         text: e.response ? e.response.text : e.message,
         position: 'bottom',
-        buttonText: 'Okay'
+        duration: 4000
       })
 
       this.setState({ saving: false })
