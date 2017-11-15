@@ -77,7 +77,7 @@ class FilesView extends React.Component {
       let query = `status = "complete" && user_id = "${account.id}" `
 
       if (criteria.title.trim().length > 0) {
-        query += ` && title BEGINSWITH[c] "${criteria.title}"`
+        query += ` && title CONTAINS[c] "${criteria.title}"`
       }
 
       // filter by favorited
