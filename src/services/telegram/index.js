@@ -17,9 +17,9 @@ export default function(routerHistory, user, message) {
 
   Telegram.sendCommand(user.telegram_id, message)
 
-  Toast.show({
-    text: 'The request has been sent',
-    position: 'top',
-    duration: 3000
-  })
+  Alert.alert(
+    'Message Sent',
+    'The request has been sent to your Telegram messenger',
+    [ {text: 'Ok', onPress: () => null}]
+  )
 }

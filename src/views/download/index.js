@@ -26,6 +26,7 @@ class DownloadView extends React.Component {
     this.state = {
       working: false,
       waitForDownload: 0,
+      isSentToTelegram: false,
       thumbnail: null,
       selectedFormat: this.getBestFormat()
     }
@@ -358,12 +359,18 @@ class DownloadView extends React.Component {
   sendToTelegram() {
     const { history, download, account } = this.props
     const { selectedFormat } = this.state
+
+    this.setState({
+      isSentToTelegram: true
+    })
+
     SendToTelegram(history, account, `/${download.id}${selectedFormat}`)
   }
 
   render() {
     const { download } = this.props
-    const { working, waitForDownload, thumbnail, selectedFormat } = this.state
+    const { working, isSentToTelegram, waitForDownload,
+      thumbnail, selectedFormat } = this.state
 
     return (
       <View style={styles.container}>
@@ -394,8 +401,9 @@ class DownloadView extends React.Component {
             <CTA
               working={working}
               waitForDownload={waitForDownload}
+              isSentToTelegram={isSentToTelegram}
               startProcessing={() => this.startProcessing()}
-              sendToTelegram={() => this.sendToTelegram()}
+              onSendToTelegram={() => this.sendToTelegram()}
             />
           </Row>
         </Grid>

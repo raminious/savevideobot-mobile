@@ -13,8 +13,9 @@ function getDownloadCaption(working, waitForDownload) {
 export default ({
   working,
   waitForDownload,
+  isSentToTelegram,
   startProcessing,
-  sendToTelegram
+  onSendToTelegram
 }) => (
   <Col>
     <Row>
@@ -41,9 +42,9 @@ export default ({
         bordered
         full
         small
-        disabled={working || waitForDownload !== 0}
+        disabled={working || isSentToTelegram || waitForDownload !== 0}
         style={{ flex: 1 }}
-        onPress={sendToTelegram}
+        onPress={onSendToTelegram}
       >
         <Icon name="send" style={{ fontSize: 17 }} />
         <Text style={{ fontSize: 12 }}>
