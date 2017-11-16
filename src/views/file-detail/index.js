@@ -4,10 +4,12 @@ import { connect } from 'react-redux'
 import { Grid, Row, Col, View, Button, Content, Card, CardItem, Body,
   Left, Right, Thumbnail, Icon, Text
 } from 'native-base'
+import GestureRecognizer from 'react-native-swipe-gestures'
 import { Image, Alert, ActivityIndicator } from 'react-native'
 import RNFetchBlob from 'react-native-fetch-blob'
 import mime from 'mime-types'
 import moment from 'moment'
+import _ from 'underscore'
 import db from '../../database'
 import ThumbnailService from '../../services/thumbnail'
 import SendToTelegram from '../../services/telegram'
@@ -168,6 +170,10 @@ class FileDetailView extends React.Component {
     })
   }
 
+  onSwipeRight(state) {
+    this.goBack()
+  }
+
   render() {
     const { media, showCard, fileExists, deleting } = this.state
 
@@ -175,6 +181,13 @@ class FileDetailView extends React.Component {
       return <Loading
         text={deleting ? 'Deleting ...' : 'Loading ...'}
       />
+    }
+
+    const table = {
+      'Filename': media.filename,
+      'Size': this.bytes(media.size),
+      'Download time': moment(media.date_created).format('Y/M/D HH:mm'),
+      'Saved Path': media.filepath
     }
 
     return (
@@ -185,108 +198,100 @@ class FileDetailView extends React.Component {
           onToggleShowCard={() => this.onToggleShowCard()}
         />
 
-        <View style={styles.container}>
-          <Image
-            style={styles.bg}
-            source={ThumbnailService.loadImage(media)}
-          />
+        <GestureRecognizer
+          onSwipeRight={(state) => this.onSwipeRight(state)}
+          style={styles.container}
+        >
+          <View style={styles.container}>
+            <Image
+              style={styles.bg}
+              source={ThumbnailService.loadImage(media)}
+            />
 
-          {
-            showCard &&
-            <Content>
-              <Card style={styles.card}>
-                <CardItem header>
-                  <Left>
-                    <Thumbnail
-                      source={ThumbnailService.loadImage(media)}
-                    />
+            {
+              showCard &&
+              <Content>
+                <Grid style={[styles.card, styles.headerCard]}>
+                  <Row>
+                    <Col size={20}>
+                      <Thumbnail
+                        source={ThumbnailService.loadImage(media)}
+                      />
+                    </Col>
 
-                    <Body>
+                    <Col size={80}>
                       <Text>{this.getTitle(media.title)}</Text>
                       <Text note>{this.capitalize(media.type)}</Text>
-                    </Body>
-                  </Left>
-                </CardItem>
+                    </Col>
+                  </Row>
+                </Grid>
 
-                <CardItem>
-                  <View style={styles.container}>
-                    <View style={styles.row}>
-                      <Text style={styles.rowTitle}>Filename</Text>
-                      <Text style={styles.rowDesc}>{media.filename}</Text>
-                    </View>
+                <Grid style={[styles.card, styles.middleCard]}>
+                  {
+                    _.map(table, (value, name) =>
+                      <Row
+                        key={`FIELD_${name}`}
+                        style={styles.fieldRow}
+                      >
+                        <Col>
+                          <Text note>{name}</Text>
+                          <Text style={styles.fieldValue}>{value}</Text>
+                        </Col>
+                      </Row>
+                    )
+                  }
+                </Grid>
 
-                    <View style={styles.row}>
-                      <Text style={styles.rowTitle}>Size</Text>
-                      <Text style={styles.rowDesc}>{this.bytes(media.size)}</Text>
-                    </View>
+                <Grid style={[styles.card, styles.footerCard]}>
+                  <Row>
+                    <Col style={{ paddingRight: 5 }}>
+                      <Button
+                        small
+                        iconLeft
+                        info
+                        full
+                        onPress={() => this.openFile()}
+                      >
+                        <Icon name="open" />
+                        <Text>Open {media.type}</Text>
+                      </Button>
+                    </Col>
 
-                    <View style={styles.row}>
-                      <Text style={styles.rowTitle}>Date created</Text>
-                      <Text style={styles.rowDesc}>{moment(media.date_created).format('Y/M/D HH:mm')}</Text>
-                    </View>
+                    <Col style={{ paddingLeft: 5 }}>
+                      <Button
+                        small
+                        iconLeft
+                        danger
+                        full
+                        onPress={() => this.requestDeleteFile()}
+                      >
+                        <Icon name="trash" />
+                        <Text>Delete {media.type}</Text>
+                      </Button>
+                    </Col>
+                  </Row>
 
-                    <View style={styles.row}>
-                      <Text style={styles.rowTitle}>Saved Path</Text>
-                      <Text style={styles.rowDesc}>{media.filepath}</Text>
-                    </View>
-                  </View>
-                </CardItem>
+                  <Row style={{ marginTop: 10 }}>
+                    <Col>
+                      <Button
+                        small
+                        full
+                        iconLeft
+                        dark
+                        style={styles.btnCta}
+                        onPress={() => this.sendToTelegram()}
+                      >
+                        <Icon name="send" />
+                        <Text>Send file to my Telegram</Text>
+                      </Button>
+                    </Col>
+                  </Row>
+                </Grid>
 
-                <CardItem footer>
-                  <Grid>
-                    <Row>
-
-                      <Col style={{ paddingRight: 3 }}>
-                        <Button
-                          small
-                          iconLeft
-                          bordered
-                          info
-                          full
-                          onPress={() => this.openFile()}
-                        >
-                          <Icon name="open" />
-                          <Text>Open {media.type}</Text>
-                        </Button>
-                      </Col>
-
-                      <Col style={{ paddingLeft: 3 }}>
-                        <Button
-                          small
-                          iconLeft
-                          bordered
-                          danger
-                          full
-                          onPress={() => this.requestDeleteFile()}
-                        >
-                          <Icon name="trash" />
-                          <Text>Delete {media.type}</Text>
-                        </Button>
-                      </Col>
-                    </Row>
-
-                    <Row style={{ marginTop: 6 }}>
-                      <Col>
-                        <Button
-                          small
-                          full
-                          iconLeft
-                          bordered
-                          dark
-                          style={styles.btnCta}
-                          onPress={() => this.sendToTelegram()}
-                        >
-                          <Icon name="send" />
-                          <Text>Send file to my Telegram</Text>
-                        </Button>
-                      </Col>
-                    </Row>
-                  </Grid>
-                </CardItem>
-             </Card>
-            </Content>
-          }
-        </View>
+              </Content>
+            }
+          </View>
+        </GestureRecognizer>
       </View>
     )
   }

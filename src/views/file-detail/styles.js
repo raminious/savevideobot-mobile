@@ -7,26 +7,27 @@ export default StyleSheet.create({
   },
   card: {
     flex: 1,
-    marginLeft: 20,
-    marginRight: 20,
-    marginTop: 50
+    marginTop: 10,
+    marginLeft: 30,
+    marginRight: 30,
+    padding: 15,
+    borderRadius: 10,
+    backgroundColor: '#fff'
   },
-  row: {
-    flex: 1,
-    flexDirection: 'column',
-    marginBottom: 5,
+  headerCard: {
+    marginTop: 30
   },
-  rowTitle: {
-    flex: 1,
-    color: '#ED4A6A',
-    fontWeight: 'bold',
+  middleCard: {
+    backgroundColor: '#eee'
+  },
+  footerCard: {
+  },
+  fieldRow: {
+    marginBottom: 10
+  },
+  fieldValue: {
     fontSize: 14,
-  },
-  rowDesc: {
-    flex: 1,
-    color: '#262626',
-    fontSize: 13,
-    paddingBottom: 5
+    color: '#262626'
   },
   bg: {
     position: 'absolute',
