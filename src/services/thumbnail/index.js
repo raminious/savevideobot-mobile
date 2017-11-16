@@ -29,8 +29,8 @@ const getInfo = async function (media) {
     }
   }
 
-  const thumbnails = [media.thumbnail, media.thumbnailProxy]
   let url = null
+  const thumbnails = [media.thumbnail, media.thumbnailProxy]
 
   for (const thumb of thumbnails) {
     try {
@@ -94,7 +94,7 @@ const loadImage = (media) => {
  * save media thumbnail on disk
  */
 const saveOnDisk = async (id, thumbnail, prefix) => {
-  if (thumbnail.isDefault) {
+  if (!thumbnail || thumbnail.isDefault) {
     return null
   }
 

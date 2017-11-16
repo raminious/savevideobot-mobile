@@ -2,8 +2,17 @@ import React from 'react'
 import { Row, Col, View, Button, Icon, Text } from 'native-base'
 import styles from './styles'
 
+function getDownloadCaption(working, waitForDownload) {
+  if (waitForDownload !== 0) {
+    return `Wait For ${waitForDownload}`
+  }
+
+  return working ? 'Starting ...' : 'Start Downloading'
+}
+
 export default ({
   working,
+  waitForDownload,
   startProcessing,
   sendToTelegram
 }) => (
@@ -20,7 +29,7 @@ export default ({
       >
         <Icon name="download" style={{ fontSize: 17 }} />
         <Text style={{ fontSize: 12 }}>
-          {working ? 'Starting ...' : 'Start Downloading'}
+          {getDownloadCaption(working, waitForDownload)}
         </Text>
       </Button>
     </Row>
@@ -32,7 +41,7 @@ export default ({
         bordered
         full
         small
-        disabled={working}
+        disabled={working || waitForDownload !== 0}
         style={{ flex: 1 }}
         onPress={sendToTelegram}
       >

@@ -2,11 +2,13 @@ import React from 'React'
 import { withRouter } from 'react-router-native'
 import { connect } from 'react-redux'
 import { Content, View, Toast, Button, Text, Icon, Col, Row, Grid } from 'native-base'
-import { Platform, Image } from 'react-native'
+import { Alert, Image } from 'react-native'
 import RNFetchBlob from 'react-native-fetch-blob'
+import moment from 'moment'
 import _ from 'underscore'
 import Thumbnail from '../../services/thumbnail'
 import DownloaderService from '../../services/downloader'
+import { buySubscription } from '../../actions/account'
 import db from '../../database'
 import Media from '../../api/media'
 import SendToTelegram from '../../services/telegram'
@@ -23,6 +25,7 @@ class DownloadView extends React.Component {
 
     this.state = {
       working: false,
+      waitForDownload: 0,
       thumbnail: null,
       selectedFormat: this.getBestFormat()
     }
@@ -63,9 +66,12 @@ class DownloadView extends React.Component {
    */
   async fetchThumbnail() {
     const { download } = this.props
+
     const thumbnail = await Thumbnail.getInfo(download)
 
-    this.setState({ thumbnail })
+    this.setState({
+      thumbnail
+    })
   }
 
   /*
@@ -234,7 +240,7 @@ class DownloadView extends React.Component {
    * start to download media
    */
   async process() {
-    const { history } = this.props
+    const { account, history } = this.props
     const { selectedFormat } = this.state
     const media = this.props.download
     const format = selectedFormat.toString()
@@ -260,6 +266,21 @@ class DownloadView extends React.Component {
 
         return history.push('/progress')
       }
+    }
+
+    // check user has subscription to download this file or not
+    const waitTime = this.checkSubscription()
+
+    if (waitTime !== 0) {
+      return Alert.alert(
+        'Buy subscription',
+        `Your subscription has been expired. please upgrade your account or wait for ${waitTime}`,
+        [
+          { text: 'Cancel', onPress: () => null, style: 'cancel' },
+          { text: 'Buy subscription', onPress: () => buySubscription(account.id) }
+        ],
+        { cancelable: false }
+      )
     }
 
     return this.createNewDownload(id, media)
@@ -295,6 +316,45 @@ class DownloadView extends React.Component {
     })
   }
 
+  /**
+   *
+   */
+  checkSubscription() {
+    const { account } = this.props
+    const date = moment(account.subscription)
+
+    if (date.isAfter(moment())) {
+      return 0
+    }
+
+    const lastMedia = db
+      .find('Media')
+      .filtered(`user_id = '${account.id}'`)
+      .sorted('date_created', true)
+      .slice(0, 1)
+
+    if (lastMedia.length === 0) {
+      return 0
+    }
+
+    // free users can download every 8 hours
+    const newDate = moment(lastMedia[0].date_created).add(8, 'hours')
+
+    if (moment().isAfter(newDate)) {
+      return 0
+    }
+
+    const waitForDownload = newDate.fromNow(true)
+
+    // set state waiting for download
+    this.setState({
+      working: false,
+      waitForDownload
+    })
+
+    return waitForDownload
+  }
+
   sendToTelegram() {
     const { history, download, account } = this.props
     const { selectedFormat } = this.state
@@ -303,7 +363,7 @@ class DownloadView extends React.Component {
 
   render() {
     const { download } = this.props
-    const { working, thumbnail, selectedFormat } = this.state
+    const { working, waitForDownload, thumbnail, selectedFormat } = this.state
 
     return (
       <View style={styles.container}>
@@ -333,6 +393,7 @@ class DownloadView extends React.Component {
           >
             <CTA
               working={working}
+              waitForDownload={waitForDownload}
               startProcessing={() => this.startProcessing()}
               sendToTelegram={() => this.sendToTelegram()}
             />
