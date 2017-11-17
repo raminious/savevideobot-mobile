@@ -1,5 +1,4 @@
 /* global __DEV__ */
-import { Platform } from 'react-native'
 
 // get dev server based on platform
 const devServer = 'http://192.168.1.100:17000'
