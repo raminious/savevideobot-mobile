@@ -30,7 +30,7 @@ const getInfo = async function (media) {
   }
 
   let url = null
-  const thumbnails = [media.thumbnail, media.thumbnailProxy]
+  const thumbnails = [media.thumbnailProxy, media.thumbnail]
 
   for (const thumb of thumbnails) {
     try {
