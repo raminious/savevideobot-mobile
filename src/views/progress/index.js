@@ -50,6 +50,10 @@ class ProgressView extends React.Component {
 
   onOpenMedia(taskId) {
     const { history } = this.props
+
+    // clear task in progress on opening
+    this.onClearTask(taskId)
+
     history.push(`/files/${taskId}`)
   }
 
@@ -72,6 +76,12 @@ class ProgressView extends React.Component {
     DownloaderService.resumeTask(taskId)
   }
 
+  onClickListItem(item, id) {
+    if (item.done) {
+      this.onOpenMedia(id)
+    }
+  }
+
   /*
    * Convert bytes to human readable size
    */
@@ -86,12 +96,6 @@ class ProgressView extends React.Component {
 
     // eslint-disable-next-line no-restricted-properties
     return (bytes / Math.pow(1024, i)).toFixed(2) + ' ' + sizes[i]
-  }
-
-  onClickListItem(item, id) {
-    if (item.done) {
-      this.onOpenMedia(id)
-    }
   }
 
   render() {
